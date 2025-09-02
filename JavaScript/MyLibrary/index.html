@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Library</title>
+  </head>
+  <body>
+    <header>
+      <img src="./assets/icons/book.svg" alt="My Library" class="book-icon" />
+      <h1>My Library</h1>
+    </header>
+    <main>
+      <h2>My Books Library</h2>
+      <div id="book-container"></div>
+      <button id="add-book-btn" aria-label="Add Book" title="Add Book">
+        <img src="./assets/icons/add.svg" alt="Add Book" />
+      </button>
+      <dialog id="add-book-dialog">
+        <h3>Add a New Book</h3>
+        <form class="form" id="book-form">
+          <div>
+            <label for="title">Book Title</label>
+            <input type="text" id="title" name="title" required />
+          </div>
+          <div>
+            <label for="author">Author</label>
+            <input type="text" id="author" name="author" required />
+          </div>
+          <div>
+            <label for="pages">No. of Pages</label>
+            <input type="number" id="pages" name="pages" required />
+          </div>
+          <div class="book-status">
+            <p for="read">Have you read it?</p>
+
+            <label>
+              <input type="checkbox" id="read" name="read" />
+              <span
+                class="status"
+                role="switch"
+                aria-label="Toggle read status"
+              ></span>
+            </label>
+          </div>
+          <button type="submit">Add Book</button>
+        </form>
+        <button id="close-dialog" title="Delete Book">Close</button>
+      </dialog>
+    </main>
+    <script src="script.js" defer></script>
+  </body>
+</html>

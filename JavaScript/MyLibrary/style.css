@@ -1,0 +1,205 @@
+@import url("https://fonts.googleapis.com/css2?family=Grenze+Gotisch:wght@100..900&display=swap");
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+/* Icons */
+
+body {
+  background-color: #e6ddd3;
+  font-family: "Grenze Gotisch", serif;
+}
+
+header {
+  background-color: #514f4d;
+  color: white;
+  padding: 1.5rem 2rem;
+  text-align: left;
+  font-weight: 800;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  img {
+    width: 2.5rem;
+  }
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 1rem;
+  gap: 1rem;
+  h2 {
+    font-size: 32px;
+  }
+}
+#book-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+.book {
+  background-color: aliceblue;
+  border-radius: 1rem;
+  padding: 0.4rem 1rem;
+  text-align: left;
+  border: 2px solid #514f4d;
+  box-shadow: 2px 2px 0px #514f4d;
+  position: relative;
+  h3 {
+    font-size: 24px;
+  }
+  div.book-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    p:nth-child(1) {
+      font-size: 20px;
+      color: rgb(115, 103, 103);
+    }
+    p:nth-child(2) {
+      font-size: 18px;
+      font-weight: bold;
+      color: rgb(115, 103, 103);
+    }
+  }
+  div.book-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  button.remove-book {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    top: -0.6rem;
+    right: -0.6rem;
+    background-color: aliceblue;
+    width: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2rem;
+    border: 2px solid #514f4d;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    img {
+      width: 1.5rem;
+    }
+    &:hover {
+      transform: scale(1.1);
+      background-color: rgb(250, 200, 192);
+    }
+  }
+}
+
+.book-status {
+  margin-top: 0.5rem;
+  label {
+    position: relative;
+    display: inline-block;
+    width: 2.5rem;
+    height: 1.4rem;
+    border-radius: 1.4rem;
+    background-color: #ccc; /* default "off" track color */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute;
+  }
+  span {
+    position: absolute;
+    top: 0.15rem;
+    left: 0.15rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 50%;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+  }
+  input:checked + span {
+    transform: translateX(1.1rem);
+  }
+  label:has(input:checked) {
+    background-color: #4caf50; /* change track color when checked */
+  }
+  p {
+    font-weight: bold;
+    font-size: 18px;
+    letter-spacing: 1px;
+  }
+}
+#add-book-btn {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #514f4d;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  img {
+    width: 2rem;
+    height: 2rem;
+  }
+  &:hover {
+    background-color: rgb(115, 103, 103);
+  }
+}
+dialog {
+  background-color: #f5f1ed;
+  padding: 1rem;
+  width: 50%;
+  border-radius: 1rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  h3 {
+    font-size: 26px;
+    margin-bottom: 1rem;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    div {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      label,
+      p {
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 0.3rem;
+        text-transform: uppercase;
+        color: #747271;
+      }
+      input:not([type="checkbox"]) {
+        width: 100%;
+        padding: 0.4rem 0.6rem;
+        border: 1px solid #514f4d;
+        border-radius: 0.5rem;
+        font-size: 16px;
+      }
+    }
+    div.book-status {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      gap: 0.5rem;
+    }
+  }
+}
