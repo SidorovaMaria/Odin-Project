@@ -1,0 +1,208 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
+@font-face {
+  font-family: "Norse Bold";
+  src: url("/assets/fonts/Norse-Bold.otf") format("truetype");
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  --color-dark-blue: #002748;
+  --color-accent: #e06a76;
+  --color-light-accent: #fdb0ac;
+  --color-blue: #265f9c82;
+  --color-light-blue: #d2d4d8;
+  --color-light-blue-transparent: rgba(118, 145, 204, 0.15);
+  --font-quicksand: "Quicksand", sans-serif;
+}
+body {
+  font-family: var(--font-quicksand);
+  background-color: var(--color-dark-blue);
+  color: var(--color-light-blue);
+}
+main {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
+
+/* Left Side */
+.left-side {
+  position: relative;
+}
+.bg-image {
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+}
+.logo-container {
+  position: absolute;
+  top: 30%;
+  backdrop-filter: blur(10px);
+  left: 0px;
+  right: 0px;
+  gap: 1rem;
+  width: 90%;
+  display: flex;
+  border: 1px solid var(--color-light-blue);
+  box-shadow: 2px 2px 10px rgba(255, 255, 255, 0.4);
+  justify-content: center;
+  padding: 1rem 0px;
+  border-radius: 1rem;
+  align-items: center;
+  margin: 0px auto;
+  background-color: var(--color-light-blue-transparent);
+  img {
+    max-width: 50px;
+    height: auto;
+    object-fit: contain;
+  }
+  h1 {
+    width: fit-content;
+    color: white;
+    text-align: center;
+    font-size: 32px;
+    font-weight: bold;
+    font-family: "Norse Bold", sans-serif;
+  }
+}
+
+.right-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100vh;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  h2 {
+    font-size: 20px;
+    line-height: 26px;
+    font-weight: 800;
+    max-width: 80%;
+    margin: 0 auto;
+  }
+  p {
+    font-size: 18px;
+    font-weight: 600;
+  }
+}
+
+.form-container {
+  background-color: var(--color-blue);
+  padding: 1.2rem 1.5rem;
+  width: 100%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  border-radius: 10px;
+  box-shadow: 1px 2px 10px rgba(255, 255, 255, 0.453);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 80%;
+}
+form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 1rem;
+  column-gap: 1.5rem;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 0.5rem;
+  label {
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    opacity: 80%;
+  }
+  input {
+    padding: 0.3rem 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    background-color: var(--color-light-blue-transparent);
+    color: white;
+    font-size: 14px;
+    outline: none;
+  }
+}
+.helper {
+  font-size: 10px !important;
+  color: rgba(255, 255, 255, 0.8);
+}
+.form-group input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+  letter-spacing: 0.4px;
+}
+input:focus,
+input:active {
+  border: 1px solid var(--color-light-blue);
+}
+input:invalid {
+  border: 1px solid var(--color-accent);
+}
+.action-btn {
+  margin: 0.5rem 0;
+  padding: 0.8rem 2rem;
+  background-color: var(--color-blue);
+  border: 1px solid var(--color-light-blue);
+  border-radius: 10px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  &:hover {
+    transform: translate(0px, -2px);
+    box-shadow: 1px 1px 0px rgb(255, 255, 255);
+    background-color: #ccd9f53c;
+  }
+  &:active {
+    box-shadow: none;
+    transform: translate(0px, 0px);
+  }
+}
+a {
+  text-decoration: none;
+  color: var(--color-accent);
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+    color: var(--color-light-accent);
+  }
+}
+.required {
+  color: var(--color-accent);
+  font-size: 16px;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .right-side {
+    gap: 0.8rem;
+  }
+  .logo-container {
+    flex-direction: column;
+  }
+  .form-container {
+    gap: 0.5rem;
+  }
+  form {
+    grid-template-columns: 1fr;
+    row-gap: 0.25rem;
+  }
+  h2.about {
+    font-size: 16px;
+    line-height: 18px;
+  }
+  .action-btn {
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+  }
+}
