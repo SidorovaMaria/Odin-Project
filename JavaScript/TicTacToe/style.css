@@ -1,0 +1,181 @@
+@import url("https://fonts.googleapis.com/css2?family=Single+Day&display=swap");
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Single Day", cursive;
+}
+:root {
+  --background-color: #0a314d;
+  --text-color: #ffffff;
+  --player-1-color: #ffd447;
+  --player-2-color: #db2b39;
+  --accent: var(--player-1-color);
+}
+
+body,
+html {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  height: 100%;
+}
+header {
+  width: 100%;
+  background-color: #145a8c;
+  text-align: center;
+  padding: 0.6rem;
+  font-size: 26px;
+  h1 {
+    animation: bounce 2s infinite;
+  }
+}
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+main {
+  max-width: 720px;
+  margin: 1rem auto;
+  padding: 0.5rem 1rem;
+}
+.controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+.names {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.name {
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  align-items: center;
+  label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 24px;
+    text-transform: uppercase;
+  }
+  span.player-1,
+  #playerXScore {
+    font-size: 32px;
+    color: var(--player-1-color);
+  }
+  span.player-2,
+  #playerOScore {
+    font-size: 32px;
+    color: var(--player-2-color);
+  }
+  input {
+    background: #2672a8;
+    color: #ffffff;
+    font-size: 16px;
+    border: 1px solid #1f2937;
+    border-radius: 0.6rem;
+    padding: 0.6rem 0.8rem;
+    outline: none;
+  }
+  input::placeholder {
+    color: #ffffffa2;
+  }
+  .score {
+    font-size: 1.5rem;
+    color: var(--text-color);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 0.5rem;
+    width: 100%;
+  }
+}
+.control-button {
+  display: flex;
+  gap: 1rem;
+  button {
+    padding: 0.4rem 1.2rem;
+    background-color: #2672a8;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    border-radius: 0.8rem;
+    border: 2px solid white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.5s ease,
+      box-shadow 0.5s ease;
+    &:hover {
+      background-color: #0a314d;
+      transform: translateY(-4px);
+      box-shadow: 0px 4px 0px rgba(255, 255, 255);
+    }
+  }
+}
+#startGame.hidden {
+  display: none;
+}
+#continueGame.hidden {
+  display: none;
+}
+.message {
+  text-align: center;
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+.game-board {
+  max-width: 400px;
+  margin: 1rem auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  border: 2px solid #ffffff;
+  background: #145a8c;
+}
+.cell {
+  aspect-ratio: 1 / 1;
+  font-size: clamp(2.2rem, 8vw, 4rem);
+  border-radius: 0.8rem;
+  border: 1px dashed white;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  background: #1c2c4d;
+  color: white;
+  transition: background-color 0.3s ease, all 0.6s ease;
+}
+.cell.can-hover:hover {
+  background-color: var(--accent);
+  cursor: pointer;
+}
+.cell:not(.can-hover) {
+  cursor: not-allowed;
+}
+.cell.win {
+  background-color: rgb(128, 243, 128);
+  color: var(--background-color);
+  font-size: 60px;
+  border: none;
+}
+.cell.disabled {
+  pointer-events: none;
+}
+.cell.disabled.tie {
+  background-color: #f0ac4eb3;
+  color: var(--background-color);
+  font-size: 60px;
+  border: none;
+}

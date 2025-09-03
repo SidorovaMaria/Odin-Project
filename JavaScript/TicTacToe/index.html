@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tic Tac Toe</title>
+  </head>
+  <body>
+    <header>
+      <h1>Tic Tac Toe</h1>
+    </header>
+    <main>
+      <section class="controls">
+        <div class="names">
+          <div class="name">
+            <label for="playerX">
+              Player
+              <span class="player-1">X</span>
+            </label>
+            <input type="text" id="playerX" placeholder="Player 1" />
+            <p class="score">
+              Score:
+              <span id="playerXScore">0</span>
+            </p>
+          </div>
+
+          <div class="name">
+            <label for="playerO">
+              Player
+              <span class="player-2">O</span>
+            </label>
+            <input type="text" id="playerO" placeholder="Player 2" />
+            <p class="score">
+              Score:
+              <span id="playerOScore">0</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="control-button">
+          <button type="button" id="startGame" data-start>Start Game</button>
+          <button type="button" id="resetGame" data-reset>Reset Game</button>
+          <button type="button" class="hidden" id="continueGame" data-continue>
+            Continue Game
+          </button>
+        </div>
+      </section>
+      <section class="status">
+        <p class="message" data-message>Enter names and press Start.</p>
+      </section>
+      <section class="game-board" data-board>
+        <!-- 9 cells -->
+        <button
+          class="cell"
+          data-cell
+          data-index="0"
+          aria-label="Cell 1"
+        ></button>
+        <button
+          class="cell"
+          data-cell
+          data-index="1"
+          aria-label="Cell 2"
+        ></button>
+        <button
+          class="cell"
+          data-cell
+          data-index="2"
+          aria-label="Cell 3"
+        ></button>
+        <button
+          class="cell"
+          data-cell
+          data-index="3"
+          aria-label="Cell 4"
+        ></button>
+        <button
+          class="cell"
+          data-cell
+          data-index="4"
+          aria-label="Cell 5"
+        ></button>
+        <button
+          class="cell"
+          data-cell
+          data-index="5"
+          aria-label="Cell 6"
+        ></button>
+        <button
+          class="cell"
+          data-cell
+          data-index="6"
+          aria-label="Cell 7"
+        ></button>
+
+        <button
+          class="cell"
+          data-cell
+          data-index="7"
+          aria-label="Cell 8"
+        ></button>
+        <button
+          class="cell"
+          data-cell
+          data-index="8"
+          aria-label="Cell 9"
+        ></button>
+      </section>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
