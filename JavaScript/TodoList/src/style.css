@@ -1,0 +1,367 @@
+:root {
+  --color-primary: hsl(210, 72%, 56%);
+  --color-primary-foreground: hsl(210, 100%, 98%);
+  --color-sand: hsl(38, 30%, 38%);
+  --color-sand-foreground: hsl(42, 45%, 98%);
+  --color-accent: hsl(12, 74%, 62%);
+  --color-accent-foreground: hsl(0, 0%, 100%);
+  --color-success: hsl(146, 45%, 52%);
+  --color-warning: hsl(28, 92%, 62%);
+  --color-danger: hsl(358, 76%, 60%);
+  --color-bg: hsl(222, 28%, 10%);
+  --color-surface: hsl(222, 22%, 14%);
+  --color-muted: hsl(222, 12%, 24%);
+  --color-text: hsl(42, 45%, 98%);
+  --color-text-muted: hsl(222, 10%, 50%);
+}
+html,
+body {
+  background-color: var(--color-bg);
+  color: white;
+  font-family: "Cabin", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+/* ======== Task Style ======== */
+.task {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border-radius: 1rem;
+  padding: 1rem;
+  margin: 1rem;
+  max-width: 450px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.task.completed {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--color-text-muted);
+  border: 2px solid var(--color-primary);
+  pointer-events: none;
+
+  & > p:first-of-type,
+  .top-container,
+  .due-date {
+    text-decoration: line-through;
+  }
+  .due-date span {
+    color: var(--color-text-muted);
+  }
+  .icon-btn {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  .checklist-label {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  .completed-toggle {
+    pointer-events: visible;
+    opacity: 1;
+  }
+}
+.top-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.button-container {
+  display: flex;
+  gap: 0.5rem;
+}
+.icon-btn {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  transition: background-color 0.3s ease, opacity 0.5s ease;
+  &:hover,
+  &:focus {
+    background-color: var(--color-text-muted);
+  }
+}
+.task > p {
+  margin: 0.8rem 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.checklist-wrapper {
+  margin-top: 0.5rem;
+  padding: 0.5rem 0.25rem;
+  border-top: 1px solid var(--color-text-muted);
+  h4 {
+    font-size: 18px;
+  }
+}
+.empty-checklist-msg {
+  color: var(--color-text-muted);
+  text-align: center;
+  font-size: 1.1rem;
+  font-style: italic;
+  margin-top: 0.5rem;
+}
+.checklist-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.5rem;
+  button {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+}
+.checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+
+  p {
+    margin: 0;
+    flex-grow: 1;
+    word-break: break-word;
+  }
+}
+.checklist-label {
+  position: relative;
+  display: block;
+  background-color: #ccccccab;
+  width: 2.5rem;
+  border-radius: 1.5rem;
+  height: 1.2rem;
+  cursor: pointer;
+  input {
+    display: none;
+  }
+  span {
+    position: absolute;
+    top: 0.1rem;
+    left: 0.1rem;
+    width: 1rem;
+    height: 1rem;
+    background-color: white;
+    border-radius: 50%;
+  }
+  input:checked + span {
+    transform: translateX(1.3rem);
+  }
+}
+.checklist-item:has(input:checked) {
+  text-decoration: line-through;
+  color: var(--color-text-muted);
+}
+.checklist-item:has(input:checked) .checklist-label {
+  background-color: var(--color-primary);
+}
+.checklist-form {
+  margin: 0.8rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid var(--color-text-muted);
+  border-radius: 1rem;
+  animation: slideInFromTop 0.3s ease-in-out;
+  input {
+    font-size: 18px;
+    flex-grow: 1;
+    border: none;
+    background: none;
+    color: var(--color-text);
+    padding: 1rem;
+    &:focus {
+      outline: none;
+    }
+  }
+  .form-btns {
+    padding-right: 0.5rem;
+    display: flex;
+    gap: 0.5rem;
+    .add-btn:hover,
+    .add-btn:focus {
+      background-color: var(--color-success);
+    }
+    .undo-btn:hover,
+    .undo-btn:focus {
+      background-color: var(--color-danger);
+    }
+  }
+}
+.checklist-form.error {
+  background: rgba(255, 0, 0, 0.369);
+}
+.checklist-error-msg {
+  display: none;
+}
+.checklist-form.error + .checklist-error-msg {
+  display: block;
+  color: var(--color-danger);
+  font-size: 0.9rem;
+  margin-top: -0.5rem;
+  padding-left: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.created-text,
+.due-date {
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  filter: brightness(1.2);
+}
+.created-text span {
+  font-weight: 600;
+  color: var(--color-primary);
+  filter: brightness(0.8);
+}
+.due-date span {
+  font-weight: 600;
+  color: var(--color-accent);
+  filter: brightness(0.8);
+}
+.completedDue {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.completed-toggle {
+  position: relative;
+  display: block;
+  background-color: transparent;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  box-sizing: content-box;
+  border: 4px solid var(--color-primary);
+  input {
+    display: none;
+  }
+  span {
+    position: absolute;
+    top: 0rem;
+    left: 0rem;
+    width: 2rem;
+    height: 2rem;
+    background-color: transparent;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+  input:checked + span:before {
+    content: "";
+    position: absolute;
+    width: 0.6rem;
+    height: 1rem;
+    border: 3px solid white;
+    border-top: none;
+    border-left: none;
+    top: 0.4rem;
+    left: 0.7rem;
+    transform: rotate(45deg);
+  }
+  input:checked + span {
+    background-color: var(--color-primary);
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+  }
+}
+
+/* .btn-icon,
+.icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+  object-fit: cover;
+}
+
+.left-sidebar {
+  background-color: var(--color-surface);
+  border-radius: 0 2rem 2rem 0px;
+  padding: 2rem 1.5rem 4rem 1.5rem;
+  width: clamp(300px, 25vw, 20%);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  h1 {
+    font-family: "Cabin", sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: start;
+  }
+  #add-project-btn {
+    background-color: var(--color-primary);
+    border: none;
+    border-radius: 0.8rem;
+    color: var(--color-primary-foreground);
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 0.8rem;
+    margin-top: auto;
+    transition: background-color 0.3s ease;
+    &:hover,
+    &:focus {
+      background-color: hsl(210, 72%, 46%);
+    }
+    &:focus {
+      outline-offset: 1px;
+      outline: 4px solid var(--color-accent-foreground);
+    }
+  }
+  #projects-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 1rem;
+    margin: 2rem 0;
+    li {
+      width: 100%;
+    }
+    button {
+      cursor: pointer;
+      background-color: var(--color-muted);
+      color: white;
+      font-weight: 800;
+      font-size: 1rem;
+      width: 100%;
+      display: flex;
+      border: none;
+      border-radius: 1rem;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0.2rem 1rem 0.8rem;
+      transition: background-color 0.3s ease;
+      img {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+      &:hover,
+      &:focus {
+        background-color: hsl(210, 72%, 56%, 0.8);
+      }
+    }
+  }
+  #no-projects-msg {
+    color: var(--color-text-muted);
+    font-size: 1.2rem;
+    text-align: center;
+    margin-top: 2rem;
+  }
+} */
