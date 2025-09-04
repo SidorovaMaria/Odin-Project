@@ -1,6 +1,6 @@
 # Nōma - Restaurant Page
 
-**Nōma - An imaginary fine dining restaurant webpage build with Webpack and ES6 modules**
+**[Nōma](https://htmlpreview.github.io/?https://github.com/SidorovaMaria/Odin-Project/blob/noma-build/index.html) - An imaginary fine dining restaurant webpage build with Webpack and ES6 modules**
 
 ![HomePagePreview](./src/assets/home-preview.png)
 
@@ -49,10 +49,6 @@ HTML entry.
 - _**Accessible by Design**_ - _Improved focus states, proper tab indexing, and keyboard navigation ensure inclusivity and smooth interaction for all users._
 - _**Interactive Details**_ -_Subtle hover animations and refined transition effects between navigation items create an engaging yet understated interface._
 - _**Reusable Components**_ - _Modular design for Home, Menu, About, and Team sections allows for clean scalability and easy maintenance._
-
-## 🚀 Getting Started
-
-//TODO
 
 ## 📸 ScreenShots
 
