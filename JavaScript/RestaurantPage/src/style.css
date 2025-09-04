@@ -1,0 +1,196 @@
+:root {
+  --color-bg: hsl(220, 15%, 15%); /* Deep charcoal */
+  --color-surface: rgb(46, 49, 56); /* Subtle surface contrast */
+  --color-surface-muted: hsl(217, 12%, 44%); /* Muted surface for hover/focus */
+  --color-text: hsl(220, 10%, 95%); /* Soft white */
+  --color-accent: hsl(48, 94%, 65%); /* Sleek cyan-blue accent */
+  --color-accent-muted: hsl(48, 90%, 40%); /* Muted accent for hover/focus */
+  --color-border: hsl(220, 8%, 30%); /* Neutral border tone */
+}
+body {
+  font-family: "Nunito Sans", sans-serif;
+  background-color: var(--color-bg);
+}
+header {
+  z-index: 50;
+  position: fixed;
+  width: 100%;
+  background: linear-gradient(to bottom, rgba(46, 49, 56, 0.6), #16140e80);
+  backdrop-filter: blur(5px);
+  padding: 0rem 4rem;
+  height: 6rem;
+  color: var(--color-text);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  h1 {
+    font-size: 48px;
+    font-weight: 800;
+    cursor: pointer;
+    padding: 0.25rem 1rem;
+    font-family: "Lobster", sans-serif;
+  }
+  a:focus {
+    outline: none;
+  }
+  a:focus h1 {
+    border-radius: 1rem;
+    background-color: var(--color-accent-muted);
+  }
+}
+nav {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+nav button {
+  position: relative;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 1rem;
+  background-color: transparent;
+  text-transform: uppercase;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease,
+    transform 0.5s cubic-bezier(0.39, 0.575, 0.565, 1);
+  font-size: 20px;
+  letter-spacing: 2px;
+  font-family: "Lobster", sans-serif;
+}
+nav button:focus:not(.active) {
+  outline: 2px solid var(--color-accent);
+}
+nav button:focus.active {
+  background-color: hsl(48, 94%, 65%);
+  outline: none;
+  color: var(--color-bg);
+}
+nav button:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 2px;
+  width: 0;
+  background-color: var(--color-accent);
+  transition: width 0.3s ease;
+}
+nav button:not(.active):hover:before {
+  width: 100%;
+}
+
+nav button.active:before {
+  width: 100%;
+}
+#content {
+  h1,
+  h2 {
+    text-align: center;
+    font-size: 48px;
+    font-family: "Lobster", sans-serif;
+    animation: fade-in 1s ease forwards;
+  }
+}
+#content.home {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  color: var(--color-text);
+  height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(30%, 40%) 1fr;
+  place-content: center;
+  gap: 10rem;
+  align-items: center;
+  padding: max(3rem, 10vh);
+  h1 {
+    text-align: left;
+  }
+}
+@media (max-width: 1024px) {
+  #content.home {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 5rem;
+  }
+}
+.bg-container {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  filter: brightness(0.5);
+  z-index: -10;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -10;
+  }
+}
+.info {
+  text-align: left;
+  color: var(--color-text);
+  display: flex;
+  padding: 2rem 3rem;
+  background: linear-gradient(
+    to bottom right,
+    rgba(120, 106, 106, 0.215),
+    rgba(0, 0, 0, 0.4)
+  );
+  backdrop-filter: blur(5px);
+  border-radius: 4rem;
+  flex-direction: column;
+  gap: 0.5rem;
+  animation: fade-in 1s ease forwards;
+  h1 {
+    font-family: "Lobster", sans-serif;
+    font-size: 3rem;
+  }
+  & > p {
+    padding-right: 1rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+}
+
+.contact-info {
+  max-width: max(50%, 24rem);
+  text-align: left;
+  padding: 0.5rem;
+  gap: 0px;
+  border-radius: 2rem;
+  p {
+    padding-top: 0.5rem;
+  }
+  p:not(:last-child) {
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  }
+  p span {
+    font-weight: 900;
+  }
+}
+#content.home button {
+  margin: 0 auto;
+  padding: 1rem 2.5rem;
+  border: none;
+  width: fit-content;
+  border-radius: 2rem;
+  background-color: var(--color-accent);
+  color: var(--color-surface);
+  cursor: pointer;
+  font-size: 28px;
+  font-weight: 900;
+  left: 1px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-family: "Lobster", sans-serif;
+  animation: fade-in 1s ease forwards;
+  outline: none;
+  &:hover,
+  &:focus {
+    color: white;
+    background-color: var(--color-accent-muted);
+  }
+}

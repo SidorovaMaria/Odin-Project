@@ -1,0 +1,80 @@
+#content.about {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  padding: max(1rem, 5vh);
+  padding-top: 7rem;
+  .about-section {
+    display: flex;
+    font-style: italic;
+    font-size: 18px;
+    flex-direction: column;
+    gap: 0.6rem;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    font-weight: bold;
+    animation: fade-in 1s ease forwards;
+    padding: 1rem;
+  }
+  h2 {
+    font-size: 32px;
+  }
+  .people {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2.5rem;
+    align-items: center;
+    justify-items: center;
+    place-content: center;
+    text-align: center;
+    .person {
+      border-radius: 1rem;
+      backdrop-filter: blur(10px);
+      background: linear-gradient(
+        to bottom right,
+        rgba(120, 106, 106, 0.215),
+        rgba(0, 0, 0, 0.2)
+      );
+      animation: fade-in 1s ease forwards;
+      padding: 1rem;
+      h3 {
+        font-family: "Lobster", sans-serif;
+        font-size: 24px;
+      }
+      .position {
+        margin: 0.5rem 0;
+        font-style: italic;
+        font-weight: 800;
+      }
+
+      img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        margin: 1rem auto;
+        border-radius: 50%;
+      }
+    }
+    .person:focus {
+      outline: none;
+      border: 2px solid white;
+    }
+  }
+}
+
+@media (max-width: 1028px) {
+  #content.about {
+    .people {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+}
+@media (max-width: 768px) {
+  #content.about {
+    .people {
+      grid-template-columns: 1fr;
+    }
+  }
+}

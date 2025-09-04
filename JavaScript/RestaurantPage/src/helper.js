@@ -1,0 +1,8 @@
+export function createEl(tag, { classes = [], attrs = {}, text, html } = {}) {
+  const node = document.createElement(tag);
+  if (classes.length) node.classList.add(...classes);
+  for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v);
+  if (text != null) node.textContent = text;
+  if (html != null) node.innerHTML = html;
+  return node;
+}
