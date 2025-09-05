@@ -1,6 +1,6 @@
 :root {
   --color-primary: hsl(210, 72%, 56%);
-  --color-primary-foreground: hsl(210, 100%, 98%);
+  --color-primary-foreground: hwb(210 96% 0%);
   --color-sand: hsl(38, 30%, 38%);
   --color-sand-foreground: hsl(42, 45%, 98%);
   --color-accent: hsl(12, 74%, 62%);
@@ -27,19 +27,28 @@ body {
   background-color: var(--color-surface);
   color: var(--color-text);
   border-radius: 1rem;
-  padding: 1rem;
+  padding: 1rem 1.5rem 1rem 1.5rem;
   margin: 1rem;
   max-width: 450px;
+  min-width: 380px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s ease, color 0.3s ease;
 }
+.task.high-priority {
+  border-left: 6px solid var(--color-danger);
+}
+.task.medium-priority {
+  border-left: 6px solid var(--color-warning);
+}
+.task.low-priority {
+  border-left: 6px solid var(--color-success);
+}
 
 .task.completed {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: hsl(222, 22%, 14%);
   color: var(--color-text-muted);
   border: 2px solid var(--color-primary);
   pointer-events: none;
-
   & > p:first-of-type,
   .top-container,
   .due-date {
@@ -278,7 +287,7 @@ body {
   }
 }
 /* ===== TASK FORM ===== */
-.edit-task-overlay {
+.overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -292,7 +301,7 @@ body {
   z-index: 5;
   transition: fadeIn 1s ease-in-out;
 }
-.edit-task-form-container {
+.form-container {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -310,69 +319,76 @@ body {
   flex-direction: column;
   gap: 1rem;
 }
-.edit-task-form {
+.edit-task-form,
+.add-task-form {
   width: 100%;
   border-radius: 1rem;
   display: flex;
   gap: 1rem;
 
   flex-direction: column;
-  .input-container {
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-    label {
-      font-weight: 700;
-      font-size: 1rem;
-    }
-    input,
-    textarea {
-      font-family: "Cabin", sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
-      padding: 0.8rem;
-      border: 1px solid var(--color-text-muted);
-      border-radius: 0.5rem;
-      background: none;
-      color: var(--color-text);
-    }
-    input:focus,
-    textarea:focus,
-    select:focus {
-      outline: none;
-      border: 3px solid var(--color-primary);
-    }
-    input[type="date"] {
-      cursor: pointer;
-      color: var(--color-text);
-    }
-    input[type="date"]::-webkit-calendar-picker-indicator {
-      filter: invert(1); /* inverts the default dark icon to white */
-      cursor: pointer;
-    }
-  }
-  select {
-    font-family: "Cabin", sans-serif;
-    font-size: 1rem;
+}
+select {
+  font-family: "Cabin", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.8rem;
+  border: 1px solid var(--color-text-muted);
+  border-radius: 0.5rem;
+  background: none;
+  color: var(--color-text);
+  cursor: pointer;
+}
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  label {
     font-weight: 700;
-    padding: 0.8rem;
-    border: 1px solid var(--color-text-muted);
-    border-radius: 0.5rem;
-    background: none;
-    color: var(--color-text);
-    cursor: pointer;
-  }
-  .error-message {
-    color: var(--color-danger);
-    font-size: 0.9rem;
-    display: none;
-  }
-  .error-message.active {
-    display: block;
+    font-size: 1rem;
   }
 }
+.input-container:has(.input-error) {
+  input,
+  textarea {
+    border: var(--color-danger) 1px solid;
+  }
+}
+input,
+textarea {
+  font-family: "Cabin", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.8rem;
+  border: 1px solid var(--color-text-muted);
+  border-radius: 0.5rem;
+  background: none;
+  color: var(--color-text);
+}
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border: 3px solid var(--color-primary);
+}
+input[type="date"] {
+  cursor: pointer;
+  color: var(--color-text);
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* inverts the default dark icon to white */
+  cursor: pointer;
+}
+.error-message {
+  color: var(--color-danger);
+  font-size: 0.9rem;
+  display: none;
+}
+.error-message.active {
+  display: block;
+}
 
-.edit-form-header {
+.form-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -384,7 +400,8 @@ body {
     }
   }
 }
-.submit-edit-form-btn {
+.submit-btn {
+  margin-top: 0.5rem;
   background-color: var(--color-primary);
   color: var(--color-primary-foreground);
   border: none;
@@ -402,6 +419,46 @@ body {
     outline-offset: 1px;
     outline: 4px solid var(--color-accent-foreground);
   }
+}
+
+/* === PROJECT STYLES */
+.project-view {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1rem;
+}
+.project-header {
+  background-color: var(--color-surface);
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 0px 0rem 1.5rem 0rem;
+  border-bottom: 2px solid var(--color-text-muted);
+  border-right: 2px solid var(--color-text-muted);
+}
+.project-btns {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+.tasks-container {
+  padding: 1rem 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  place-content: center;
+  gap: 0.5rem;
+}
+.add-task-btn {
+  position: fixed;
+  bottom: 3rem;
+  right: 3rem;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  padding: 1.2rem;
 }
 
 /* .btn-icon,

@@ -18,3 +18,16 @@ export function createIconBtn({ icon, title, action }) {
     },
   });
 }
+
+export const getPrioritySymbol = (priority) => {
+  switch (priority) {
+    case "Low":
+      return "🟢";
+    case "Medium":
+      return "🟠";
+    case "High":
+      return "🔴";
+    default:
+      return "";
+  }
+};
