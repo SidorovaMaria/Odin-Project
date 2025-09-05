@@ -1,9 +1,10 @@
 import { v4 as uuid } from "uuid";
-import { createEl } from "./helper.js";
+import { createEl, createIconBtn } from "./helper.js";
 import deleteIcon from "../assets/icons/delete.png";
 import EditIcon from "../assets/icons/edit-text.png";
 import addIcon from "../assets/icons/add.png";
 import UndoIcon from "../assets/icons/undo.png";
+import closeIcon from "../assets/icons/close.png";
 import { format } from "date-fns";
 export class Task {
   constructor(
@@ -35,6 +36,9 @@ export class Task {
     if (!title || title.trim() === "") {
       throw new Error("Title cannot be empty");
     }
+    if (title.length > 50) {
+      throw new Error("Title cannot be longer than 50 characters");
+    }
     this._title = title;
   }
   getDescription() {
@@ -52,9 +56,14 @@ export class Task {
     return this._dueDate;
   }
   setDueDate(dueDate) {
-    if (!(dueDate instanceof Date) || isNaN(dueDate)) {
+    if (!(dueDate instanceof Date) || Number.isNaN(dueDate.getTime())) {
       throw new Error("Invalid date");
-    } else if (dueDate < new Date()) {
+    }
+    // Compare date-only (midnight) to allow 'today'
+    const toYMD = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const today = toYMD(new Date());
+    const candidate = toYMD(dueDate);
+    if (candidate < today) {
       throw new Error("Due date cannot be in the past");
     }
     this._dueDate = dueDate;
@@ -113,21 +122,15 @@ export class Task {
   }
   getTimeSinceCreation() {
     const now = new Date();
-    const diffInMs = now - this._createdAt;
-    const diffinSeconds = Math.floor(diffInMs / 1000);
-    if (diffinSeconds < 60) {
-      return `less than 1 minute(s) ago`;
-    }
-    const diffInMinutes = Math.floor(diffinSeconds / 60);
-    if (diffInMinutes < 60) {
-      return `${diffInMinutes} minute(s) ago`;
-    }
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24) {
-      return `${diffInHours} hour(s) ago`;
-    }
-    const diffInDays = Math.floor(diffInHours / 24);
-    return `${diffInDays} day(s) ago`;
+    const diffMs = now - this._createdAt.getTime();
+    const sec = Math.floor(diffMs / 1000);
+    if (sec < 60) return "less than 1 minute ago";
+    const min = Math.floor(sec / 60);
+    if (min < 60) return `${min} minute${min === 1 ? "" : "s"} ago`;
+    const hrs = Math.floor(min / 60);
+    if (hrs < 24) return `${hrs} hour${hrs === 1 ? "" : "s"} ago`;
+    const days = Math.floor(hrs / 24);
+    return `${days} day${days === 1 ? "" : "s"} ago`;
   }
   completeAllChecklistItems() {
     this._checklist.forEach((item) => (item.completed = true));
@@ -135,9 +138,31 @@ export class Task {
   uncompleteAllChecklistItems() {
     this._checklist.forEach((item) => (item.completed = false));
   }
+  toJSON() {
+    return {
+      id: this.id,
+      title: this._title,
+      description: this._description,
+      dueDate: this._dueDate.toISOString(),
+      priority: this._priority,
+      completed: this._completed,
+      checklist: this._checklist,
+      createdAt: this._createdAt.toISOString(),
+    };
+  }
+  fromJSON(json) {
+    this.id = json.id;
+    this._title = json.title;
+    this._description = json.description;
+    this._dueDate = new Date(json.dueDate);
+    this._priority = json.priority;
+    this._completed = json.completed;
+    this._checklist = json.checklist;
+    this._createdAt = new Date(json.createdAt);
+  }
 }
 
-class TaskView {
+export class TaskView {
   constructor(
     task,
     { onDelete = () => {}, onEdit = () => {}, root = document.body } = {}
@@ -158,6 +183,8 @@ class TaskView {
     this.timeEl = null;
     this.completedToggle = null;
     this._bound = false;
+    this._createdTime = null;
+    this._destroyed = false;
     // this.mainContainer = document.querySelector("#tasks-container");
   }
   renderChecklist() {
@@ -189,20 +216,30 @@ class TaskView {
           classes: ["checklist-item"],
           attrs: { "data-check-id": item.id },
         });
-        li.innerHTML = `
-        <label class='checklist-label'>
-          <input type="checkbox" data-action="toggle-check" data-check-id="${
-            item.id
-          }" ${item.completed ? "checked" : ""}>
-          <span class='style-check'></span>
-        </label>
-       <p>${item.text}</p>
-       <button class='icon-btn' data-action='delete-check' data-check-id="${
-         item.id
-       }" title='Delete checklist item'>
-         <img src='${deleteIcon}' alt='Delete'>
-       </button>
-        `;
+        const label = createEl("label", { classes: ["checklist-label"] });
+        const checkbox = createEl("input", {
+          attrs: {
+            type: "checkbox",
+            "data-action": "toggle-check",
+            "data-check-id": item.id,
+            ...(item.completed ? { checked: "" } : {}),
+          },
+        });
+        const styleCheck = createEl("span", { classes: ["style-check"] });
+        label.append(checkbox, styleCheck);
+        const p = createEl("p", { text: item.text });
+        const delBtn = createEl("button", {
+          classes: ["icon-btn"],
+          attrs: {
+            "data-action": "delete-check",
+            "data-check-id": item.id,
+            title: "Delete checklist item",
+          },
+        });
+        delBtn.append(
+          createEl("img", { attrs: { src: deleteIcon, alt: "Delete" } })
+        );
+        li.append(label, p, delBtn);
         ul.appendChild(li);
       });
       content.appendChild(ul);
@@ -222,13 +259,13 @@ class TaskView {
     }
   }
   renderCreatedAt() {
-    this.timeEl.textContent = `${this.task.getTimeSinceCreation()}`;
-    setTimeout(() => {
-      if (this.timeEl) {
-        this.timeEl.textContent = `${this.task.getTimeSinceCreation()}`;
-      }
-      this.renderCreatedAt();
-    }, 60000);
+    const update = () => {
+      if (!this.timeEl) return;
+      this.timeEl.textContent = this.task.getTimeSinceCreation();
+    };
+    update();
+    if (this._createdTime) return;
+    this._createdTime = setInterval(update, 60000);
   }
   renderCompletedDue() {
     const completedLabel = createEl("label", { classes: ["completed-toggle"] });
@@ -252,15 +289,15 @@ class TaskView {
     const titleEl = createEl("h3", { text: titleText });
     this.descEl = createEl("p", { text: this.task.getDescription() });
 
-    const editBtn = createEl("button", {
-      classes: ["icon-btn"],
-      attrs: { "data-action": "edit-task", title: "Edit task" },
-      html: `<img src="${EditIcon}" alt="Edit">`,
+    const editBtn = createIconBtn({
+      icon: EditIcon,
+      title: "Edit task",
+      action: "edit-task",
     });
-    const deleteBtn = createEl("button", {
-      classes: ["icon-btn"],
-      attrs: { "data-action": "delete-task", title: "Delete task" },
-      html: `<img src="${deleteIcon}" alt="Delete">`,
+    const deleteBtn = createIconBtn({
+      icon: deleteIcon,
+      title: "Delete task",
+      action: "delete-task",
     });
     const btns = createEl("div", { classes: ["button-container"] });
     btns.append(editBtn, deleteBtn);
@@ -296,6 +333,160 @@ class TaskView {
       this._bound = true;
     }
   }
+  destroy() {
+    this._destroyed = true;
+    if (this._createdTime) {
+      clearInterval(this._createdTime);
+      this._createdTime = null;
+    }
+    this.container.remove();
+  }
+  renderEditTaskForm() {
+    const overlay = createEl("div", {
+      classes: ["edit-task-overlay"],
+      attrs: { tabindex: "-1", id: "edit-task-overlay" },
+    });
+    const formWrapper = createEl("div", {
+      classes: ["edit-task-form-container"],
+      attrs: { id: "edit-task-form" },
+    });
+    //Header
+    const formHeader = createEl("div", { classes: ["edit-form-header"] });
+    const title = createEl("h3", {
+      text: `Editing Task `,
+    });
+    const titleText = createEl("span", { text: `"${this.task.getTitle()}"` });
+    title.appendChild(titleText);
+    const closeBtn = createIconBtn({
+      icon: closeIcon,
+      title: "Close edit form",
+      action: "close-edit-form",
+    });
+    formHeader.append(title, closeBtn);
+    //END Header
+
+    const form = createEl("form", {
+      classes: ["edit-task-form"],
+      attrs: { novalidate: "true" },
+    });
+    // Title input
+    const titleInputContainer = createEl("div", {
+      classes: ["input-container"],
+    });
+    const titleLabel = createEl("label", {
+      text: "Title",
+      attrs: { for: "edit-title" },
+    });
+    const titleInput = createEl("input", {
+      attrs: {
+        type: "text",
+        id: "edit-title",
+        name: "title",
+        required: "true",
+        maxlength: "50",
+        value: this.task.getTitle(),
+      },
+    });
+    const titleError = createEl("p", {
+      classes: ["error-message"],
+      attrs: { id: "edit-form-title-error" },
+      text: "Title cannot be empty or longer than 50 characters",
+    });
+    titleInputContainer.append(titleLabel, titleInput, titleError);
+    // End Title input
+
+    // Description input
+    const descInputContainer = createEl("div", {
+      classes: ["input-container"],
+    });
+    const descLabel = createEl("label", {
+      text: "Description",
+      attrs: { for: "edit-description" },
+    });
+    const descInput = createEl("textarea", {
+      attrs: {
+        id: "edit-description",
+        name: "description",
+        required: "true",
+        minlength: "10",
+        rows: "4",
+      },
+      text: this.task.getDescription(),
+    });
+    const descError = createEl("p", {
+      classes: ["error-message"],
+      attrs: { id: "edit-form-desc-error" },
+      text: "Description should be at least 10 characters long",
+    });
+    descInputContainer.append(descLabel, descInput, descError);
+    // End Description input
+    // Due date input
+    const dueDateInputContainer = createEl("div", {
+      classes: ["input-container"],
+    });
+    const dueDateLabel = createEl("label", {
+      text: "Due Date",
+      attrs: { for: "edit-due-date" },
+    });
+    const dueDateInput = createEl("input", {
+      attrs: {
+        type: "date",
+        id: "edit-due-date",
+        name: "dueDate",
+        required: "true",
+        value: format(this.task.getDueDate(), "yyyy-MM-dd"),
+        min: format(new Date(), "yyyy-MM-dd"),
+      },
+    });
+    const dueDateError = createEl("p", {
+      classes: ["error-message"],
+      attrs: { id: "edit-form-due-date-error" },
+      text: "Due date cannot be in the past or invalid",
+    });
+    dueDateInputContainer.append(dueDateLabel, dueDateInput, dueDateError);
+    //End Due date input
+    // Priority input
+    const priorityInputContainer = createEl("div", {
+      classes: ["input-container"],
+    });
+    const priorityLabel = createEl("label", {
+      text: "Priority",
+      attrs: { for: "edit-priority" },
+    });
+    const prioritySelect = createEl("select", {
+      attrs: { id: "edit-priority", name: "priority", required: "true" },
+    });
+    ["Low", "Medium", "High"].forEach((level) => {
+      const option = createEl("option", {
+        attrs: { value: level, selected: this.task.getPriority() === level },
+        text: level,
+        classes: ["priority-option"],
+      });
+      prioritySelect.appendChild(option);
+    });
+    priorityInputContainer.append(priorityLabel, prioritySelect);
+    //End Priority input
+    const submitBtn = createEl("button", {
+      classes: ["submit-edit-form-btn"],
+      attrs: {
+        "container-data": this.formWrapper,
+        type: "submit",
+        title: "Save Changes",
+        "data-action": "update-task",
+      },
+      text: "Save Changes",
+    });
+
+    form.append(
+      titleInputContainer,
+      descInputContainer,
+      dueDateInputContainer,
+      priorityInputContainer,
+      submitBtn
+    );
+    formWrapper.append(formHeader, form);
+    this.container.append(overlay, formWrapper);
+  }
 
   renderAddChecklistItemForm() {
     const container = this.checkListWrapper.querySelector(".checklist-content");
@@ -304,28 +495,20 @@ class TaskView {
       classes: ["checklist-input"],
       attrs: { type: "text", placeholder: "Drink coffee", required: "true" },
     });
-    const addBtn = createEl("button", {
-      html: `<img src='${addIcon}' alt='Add'/> `,
-      classes: ["icon-btn", "add-btn"],
-      attrs: {
-        type: "submit",
-        title: "Add checklist item",
-        "data-action": "add-checklist-item",
-      },
+    const addBtn = createIconBtn({
+      icon: addIcon,
+      title: "Add checklist item",
+      action: "add-checklist-item",
     });
     const errorMsg = createEl("p", {
       classes: ["checklist-error-msg"],
       text: "Please enter a valid checklist item",
     });
 
-    const undoBtn = createEl("button", {
-      html: `<img src='${UndoIcon}' alt='Undo'/> `,
-      classes: ["icon-btn", "undo-btn"],
-      attrs: {
-        type: "button",
-        title: "Undo add Checklist Item",
-        "data-action": "undo-add-checklist-item",
-      },
+    const undoBtn = createIconBtn({
+      icon: UndoIcon,
+      title: "Undo add Checklist Item",
+      action: "undo-add-checklist-item",
     });
 
     const btns = createEl("div", { classes: ["form-btns"] });
@@ -337,15 +520,14 @@ class TaskView {
     this.container.addEventListener("click", (e) => {
       const btn = e.target.closest("button[data-action]");
       if (!btn) return;
-      console.log(btn);
-
       const action = btn.getAttribute("data-action");
       switch (action) {
         case "delete-task":
-          console.log("delete task");
+          this.onDelete(this.task.getId());
+          this.destroy();
           break;
         case "edit-task":
-          console.log("editing task");
+          this.renderEditTaskForm();
           break;
         case "add-checklist-form":
           if (!this.checkListWrapper.querySelector(".checklist-form")) {
@@ -365,11 +547,17 @@ class TaskView {
           const form = btn.closest("form");
           const input = form.querySelector("input");
           const value = input.value.trim();
+          form.classList.remove("error");
           if (value) {
             this.task.addChecklistItem(value);
             this.renderChecklist();
+          } else {
+            form.classList.add("error");
           }
-          form.classList.add("error");
+          break;
+        case "close-edit-form":
+          document.querySelector("#edit-task-overlay")?.remove();
+          document.querySelector("#edit-task-form")?.remove();
           break;
       }
     });
@@ -391,16 +579,67 @@ class TaskView {
         this.container.classList.toggle("completed", this.task.isCompleted());
       }
     });
+    this.container.addEventListener("submit", (e) => {
+      const form = e.target.closest("form");
+      if (!form) return;
+      e.preventDefault();
+      if (form.classList.contains("edit-task-form")) {
+        //Edit task form submission
+        const titleInput = form.querySelector("input[name='title']");
+        const descInput = form.querySelector("textarea[name='description']");
+        const dueDateInput = form.querySelector("input[name='dueDate']");
+        const prioritySelect = form.querySelector("select[name='priority']");
+        let valid = true;
+
+        // Validate Title
+        try {
+          this.task.setTitle(titleInput.value);
+          form
+            .querySelector("#edit-form-title-error")
+            .classList.remove("active");
+          titleInput.classList.remove("input-error");
+        } catch (error) {
+          valid = false;
+          console.log("title error catched");
+          form.querySelector("#edit-form-title-error").classList.add("active");
+          titleInput.classList.add("input-error");
+        }
+        // Validate Description
+        try {
+          this.task.setDescription(descInput.value);
+          form
+            .querySelector("#edit-form-desc-error")
+            .classList.remove("active");
+          descInput.classList.remove("input-error");
+        } catch (error) {
+          valid = false;
+          form.querySelector("#edit-form-desc-error").classList.add("active");
+          descInput.classList.add("input-error");
+        }
+        // Validate Due Date
+        try {
+          this.task.setDueDate(new Date(dueDateInput.value));
+          form
+            .querySelector("#edit-form-due-date-error")
+            .classList.remove("active");
+          dueDateInput.classList.remove("input-error");
+        } catch (error) {
+          valid = false;
+          form
+            .querySelector("#edit-form-due-date-error")
+            .classList.add("active");
+          dueDateInput.classList.add("input-error");
+        }
+        // Priority (no validation needed as it's a select with fixed options)
+        this.task.setPriority(prioritySelect.value);
+
+        if (valid) {
+          this.onEdit(this.task);
+          this.render();
+          document.querySelector("#edit-task-overlay")?.remove();
+          document.querySelector("#edit-task-form")?.remove();
+        }
+      }
+    });
   }
 }
-
-const task1 = new Task(
-  "Finish Project",
-  "Complete the project by the end of the week.",
-  new Date("2023-10-20"),
-  "High"
-);
-task1.addChecklistItem("Set up project structure");
-
-const taskView1 = new TaskView(task1, {});
-taskView1.render();

@@ -6,3 +6,15 @@ export function createEl(tag, { classes = [], attrs = {}, text, html } = {}) {
   if (html != null) node.innerHTML = html;
   return node;
 }
+
+export function createIconBtn({ icon, title, action }) {
+  return createEl("button", {
+    html: `<img src='${icon}' alt='${title}'/> `,
+    classes: ["icon-btn"],
+    attrs: {
+      type: "button",
+      title: title,
+      "data-action": action,
+    },
+  });
+}
