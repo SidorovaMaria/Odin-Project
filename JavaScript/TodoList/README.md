@@ -1,6 +1,6 @@
 # Planerly – Project & Task Manager
 
-**[Planerly](https://htmlpreview.github.io/?https://github.com/SidorovaMaria/Odin-Project/blob/noma-build/index.html) – A lightweight, modular project and task management web app built with ES6 modules, localStorage persistence, and clean component-based architecture.**
+**[Planerly](https://htmlpreview.github.io/?https://github.com/SidorovaMaria/Odin-Project/blob/planerly-todo/index.html) – A lightweight, modular project and task management web app built with ES6 modules, localStorage persistence, and clean component-based architecture.**
 
 ![MainPagePreview](./src/assets/preview-main.png)
 
