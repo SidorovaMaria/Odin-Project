@@ -2,11 +2,11 @@ import { v4 as uuid } from "uuid";
 import { Task, TaskView } from "./task";
 import { createEl, createIconBtn } from "./helper";
 import DeleteIcon from "../assets/icons/delete.png";
-import EditIcon from "../assets/icons/edit-text.png";
+
 import AddIcon from "../assets/icons/add.png";
 import CloseIcon from "../assets/icons/close.png";
 import { format } from "date-fns";
-class Project {
+export class Project {
   constructor(name, tasks = []) {
     this._id = uuid();
     this._name = name;
@@ -106,32 +106,28 @@ export class ProjectView {
       },
     });
     const title = createEl("h2", { text: this._project.getName() });
-    const btnContainer = createEl("div", { classes: ["project-btns"] });
-    const editBtn = createIconBtn({
-      icon: EditIcon,
-      title: "Edit Project",
-      action: "edit-project",
+    const addBtn = createEl("button", {
+      attrs: {
+        id: "add-task-btn",
+        "data-action": "add-task-btn",
+        title: "Add Task",
+        type: "button",
+      },
+      text: " Add Task",
     });
-    const deleteBtn = createIconBtn({
-      icon: DeleteIcon,
-      title: "Delete Project",
-      action: "delete-project",
-    });
-    btnContainer.append(editBtn, deleteBtn);
-    header.append(title, btnContainer);
+    addBtn.prepend(
+      createEl("img", {
+        classes: ["icon-btn"],
+        attrs: { src: AddIcon, alt: "Add Task" },
+      })
+    );
+
+    header.append(title, addBtn);
     //Tasks Container
     const tasksContainer = createEl("div", { classes: ["tasks-container"] });
     this.container.appendChild(header);
     this.container.appendChild(tasksContainer);
     this._project.getTasks().forEach((task) => this.renderTask(task, tasksContainer));
-
-    const addTaskBtn = createIconBtn({
-      icon: AddIcon,
-      title: "Add Task",
-      action: "add-task-btn",
-    });
-    addTaskBtn.classList.add("add-task-btn");
-    this.container.appendChild(addTaskBtn);
 
     if (!this.container.isConnected) {
       this.root.appendChild(this.container);
@@ -150,65 +146,7 @@ export class ProjectView {
     });
     taskView.render();
   }
-  renderEditTitleForm() {
-    const overlay = createEl("div", {
-      classes: ["overlay"],
-      attrs: { id: "edit-project-overlay" },
-    });
-    const formWrapper = createEl("form", {
-      classes: ["form-container"],
-      attrs: { id: "edit-project-form", tabindex: "-1", novalidate: "true" },
-    });
-    //Header
-    const formHeader = createEl("div", { classes: ["form-header"] });
-    const title = createEl("h3", {
-      text: `Editing Project `,
-    });
-    const titleText = createEl("span", { text: `"${this._project.getName()}"` });
-    title.appendChild(titleText);
-    const closeBtn = createIconBtn({
-      icon: CloseIcon,
-      title: "Close edit form",
-      action: "close-edit-project-form",
-    });
-    formHeader.append(title, closeBtn);
-    //Project name
-    const ProjectNameContainer = createEl("div", {
-      classes: ["input-container"],
-    });
-    const projectNameLabel = createEl("label", {
-      text: "Project Name",
-      attrs: { for: "edit-project-name" },
-    });
-    const projectNameInput = createEl("input", {
-      attrs: {
-        type: "text",
-        id: "edit-project-name",
-        name: "project-name",
-        required: "true",
-        maxlength: "50",
-        value: this._project.getName(),
-      },
-    });
-    const projectNameError = createEl("p", {
-      classes: ["error-message"],
-      attrs: { id: "edit-project-name-error" },
-      text: "Project name cannot be empty or longer than 50 characters",
-    });
-    ProjectNameContainer.append(projectNameLabel, projectNameInput, projectNameError);
-    const submitBtn = createEl("button", {
-      classes: ["submit-btn"],
-      attrs: {
-        "container-data": this.formWrapper,
-        type: "submit",
-        title: "Save Changes",
-        "data-action": "update-project",
-      },
-      text: "Save Changes",
-    });
-    formWrapper.append(formHeader, ProjectNameContainer, submitBtn);
-    this.container.append(overlay, formWrapper);
-  }
+
   renderAddTaskForm() {
     const overlay = createEl("div", {
       classes: ["overlay"],
@@ -361,10 +299,8 @@ export class ProjectView {
     if (this._bound) return;
     this.container.addEventListener("click", (e) => {
       const action = e.target.closest("button[data-action]")?.getAttribute("data-action");
+      console.log(action);
       switch (action) {
-        case "edit-project":
-          this.renderEditTitleForm();
-          break;
         case "close-edit-project-form":
           this.container.querySelector("#edit-project-overlay")?.remove();
           this.container.querySelector("#edit-project-form")?.remove();
@@ -372,24 +308,15 @@ export class ProjectView {
         case "add-task-btn":
           this.renderAddTaskForm();
           break;
+        case "close-add-task-form":
+          this.container.querySelector("#add-task-overlay")?.remove();
+          this.container.querySelector("#add-task-form-container")?.remove();
+          break;
+        default:
+          break;
       }
     });
     this.container.addEventListener("submit", (e) => {
-      if (e.target.id === "edit-project-form") {
-        e.preventDefault();
-        const nameInput = e.target.querySelector("input[name='project-name']");
-        const form = e.target.closest("form");
-        try {
-          this._project.setName(nameInput.value);
-          this.container.querySelector("#edit-project-overlay")?.remove();
-          this.container.querySelector("#edit-project-form")?.remove();
-          const title = this.container.querySelector(".project-header h2");
-          title.textContent = this._project.getName();
-        } catch (error) {
-          form.querySelector("#edit-project-name-error").classList.add("active");
-          nameInput.classList.add("input-error");
-        }
-      }
       if (e.target.id === "add-task-form") {
         e.preventDefault();
         const titleInput = e.target.querySelector("input[name='title']");
@@ -442,46 +369,3 @@ export class ProjectView {
     });
   }
 }
-
-// const task = new Task("Sample Task", "This is a sample task", new Date("2023-10-01"), "medium");
-// const taskTwo = new Task(
-//   "Sample Task Two",
-//   "This is a sample task",
-//   new Date("2025-10-01"),
-//   "medium"
-// );
-// project.addTask(task);
-// project.addTask(taskTwo);
-// project.getTasks().forEach((t) => {
-//   const taskView = new TaskView(t, {
-//     root: document.body,
-//     onDelete: (taskId) => {
-//       project.removeTask(taskId);
-//     },
-//     onEdit: (updatedTask) => {
-//       project.updateTaskById(updatedTask.getId(), updatedTask);
-//     },
-//   });
-//   taskView.render();
-// });
-// const btn = document.createElement("button");
-// btn.textContent = "Click Me";
-// btn.addEventListener("click", () => {
-//   console.log(project);
-// });
-// document.body.appendChild(btn);
-const project = new Project("Sample Project");
-const projectView = new ProjectView(project);
-const task1 = new Task("Task 1", "Description 1", new Date("2026-01-01"), "High");
-const task2 = new Task("Task 2", "Description 2", new Date("2026-01-02"), "Medium");
-const task3 = new Task("Task 3", "Description 3", new Date("2026-01-03"), "Low");
-project.addTask(task1);
-project.addTask(task2);
-project.addTask(task3);
-projectView.render();
-const checkBtn = document.createElement("button");
-checkBtn.textContent = "Check Project State";
-checkBtn.addEventListener("click", () => {
-  console.log(project);
-});
-document.body.appendChild(checkBtn);
