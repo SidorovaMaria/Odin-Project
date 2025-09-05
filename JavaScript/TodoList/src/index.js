@@ -7,7 +7,7 @@ import { ProjectListView, ProjectsList } from "./js/projectsList";
 import { Project } from "./js/project";
 import { Task } from "./js/task";
 import { loadState, saveState } from "./js/storage";
-import { debounce } from "./js/helper";
+import { debounce } from "./js/utils";
 
 let projectsList;
 const saved = loadState();

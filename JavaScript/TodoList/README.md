@@ -1,60 +1,64 @@
-# Nōma - Restaurant Page
+# Planerly – Project & Task Manager
 
-**[Nōma](https://htmlpreview.github.io/?https://github.com/SidorovaMaria/Odin-Project/blob/noma-build/index.html) - An imaginary fine dining restaurant webpage build with Webpack and ES6 modules**
+**[Planerly](https://htmlpreview.github.io/?https://github.com/SidorovaMaria/Odin-Project/blob/noma-build/index.html) – A lightweight, modular project and task management web app built with ES6 modules, localStorage persistence, and clean component-based architecture.**
 
-![HomePagePreview](./src/assets/home-preview.png)
+![MainPagePreview](./src/assets/preview-main.png)
 
 ## ⭐️ Overview
 
-**Nōma - s a conceptual restaurant webpage celebrating the spirit of New Nordic cuisine—seasonal, foraged, fermented, and quietly radical. Picture a serene dining room tucked along Copenhagen’s harbor, where the menu shifts with the tides and the moss on your plate might be more than décor.**
+**Planerly is a conceptual productivity tool designed to keep your projects tidy, your tasks prioritized, and your workflow clear.
+Picture a minimalist kanban-style planner where projects contain tasks, tasks contain checklists, and everything stays persistent right in your browser..**
 **A part of the curriculum on [The Odin Project](https://www.theodinproject.com)**
 
 This project was created to demonstrate:
 
-- Modular JavaScript with ES6 imports/exports\
-- Asset management and bundling using Webpack\
-- Clean component-based structure for pages (Home, Menu, and About)\
-- Styling with minimalist, nature-driven aesthetics—custom fonts, subtle micro-animations, and season-based theming inspired by Nordic design
+- ES6 class-based architecture (Projects, Tasks, Views)
+- LocalStorage persistence with JSON serialization/hydration
+- Modular design for UI components and event-driven updates
+- Dynamic rendering of projects, tasks, and checklists with clean DOM helpers
+- Accessible, keyboard-friendly forms for adding and editing projects or tasks
 
 ## 🗄️ Project Structure
 
-      src/
-    │── assets/
-    │   ├── food/              # Images of dishes featured on the menu
-    │   ├── people/            # Images of people featured in team section
-    │   └── ...                # More Assets, mainly for preview
-    │
-    │── about.css              # Styles for About page
-    │── about.js               # About page component
-    │── data.js                # Data for the website
-    │── global.css             # Global styles, fonts, animations
-    │── helper.js              # Helper functions and utilities
-    │── images.js              # Image imports
-    │── index.html             # Base HTML template
-    │── index.js               # Entry point - creates Home content and handles navigation
-    │── menu.css               # Styles for Menu page
-    │── menu.js                # Menu page component
-    │── styles.css             # Styles for Home page and Header section
+      ```
+      .
+      ├── src/
+      │   ├── assets/
+      │   │   ├── icons/             # Icons used throughout the application
+      │   │   └── ...                # Preview assets
+      │   ├── js/
+      │   │   ├── project.js         # Project class and related logic
+      │   │   ├── projectsList.js    # ProjectsList class and ProjectsListView
+      │   │   ├── storage.js         # LocalStorage load/save functions
+      │   │   ├── task.js            # Task class and TaskView
+      │   │   └── utils.js           # Utility functions and helpers
+      │   ├── global.css             # Global styles, fonts, animations
+      │   ├── index.html             # Base HTML template
+      │   ├── index.js               # Entry point - initializes app
+      │   └── styles.css             # App-specific styles
+      ├── webpack.config.js          # Webpack configuration
+      └── dist/                      # Webpack output (production build)
+      ```
 
 Webpack bundles everything into `dist/`, using `index.html` as the
 HTML entry.
 
 ## ✨ Features
 
-- _**Dynamic Navigation**_ - _Seamlessly switch between Home, Menu, and About pages with smooth, polished transitions._
-- _**Scrollable Menu Showcase**_ - _A horizontal scrollable component highlights every dish with title, description, and high-quality images sourced from Unsplash._
-- _**Smooth Page Transitions**_ - _Fade-in animations enhance the experience when switching between sections, keeping the flow serene and immersive._
-- _**Custom Fonts**_ - _**Lobster** for elegant headings paired with **Nunito Sans** for a clean, modern feel that captures the Nordic dining atmosphere._
+- _**Project Management**_ - _Create, edit, rename, and delete projects with instant sidebar updates.._
+- _**Task Management**_ - _Add tasks with title, description, due date, and priority (High/Medium/Low)._
+- _**Checklists**_ - _Each task supports checklist items with toggles, add/remove, and bulk complete._
+- _**LocalStorage Persistence**_ - _Data is saved in the browser's LocalStorage, ensuring your tasks and projects are always available._
 - _**Team Showcase**_ - _A dedicated card section introduces the restaurant’s team with randomly sourced Unsplash portraits, bringing warmth and personality._
-- _**Accessible by Design**_ - _Improved focus states, proper tab indexing, and keyboard navigation ensure inclusivity and smooth interaction for all users._
-- _**Interactive Details**_ -_Subtle hover animations and refined transition effects between navigation items create an engaging yet understated interface._
-- _**Reusable Components**_ - _Modular design for Home, Menu, About, and Team sections allows for clean scalability and easy maintenance._
+- _**Edit Forms**_ - _Inline modal-style forms for updating project names and task details with validation._
+- _**Dynamic Sidebar**_ - _Active project highlighting, quick navigation._
+- _**Accessible by Design**_ - _Forms and buttons include ARIA-friendly labels, keyboard navigation, and clear focus states._
+- _**Modular Architecture**_ - _Separate ES6 modules for data models and views enable clean, scalable code._
 
 ## 📸 ScreenShots
 
-![HomePage](./src/assets/home-preview.png)
-![MenuPage](./src/assets/menu-preview.png)
-![AboutPage](./src/assets/about-preview.png)
+![Main](./src/assets/preview-main.png)
+![Form](./src/assets/preview-form.png)
 
 ## 🙏 Credits
 
@@ -64,9 +68,8 @@ HTML entry.
 
 ## 👩🏼 About me
 
-I'm a passionate web developer with a love for creating beautiful and functional websites. My journey in web development began with a curiosity for how things work under the hood, and it has evolved into a deep appreciation for the art and science of building user-friendly digital experiences. Open to work opportunities and collaborations.
+I’m Maria, a web developer passionate about building functional, elegant front-end experiences. My work focuses on clean architecture, reusable components, and making tools that feel light but powerful. Always open to collaboration and new opportunities in front-end or full-stack development.
 
 ## ‼️ Disclaimer
 
-This project is a fictional demo. The restaurant "Nōma" referenced here
-is an imaginary representation created for educational and portfolio purposes.
+Planerly is a fictional demo project built for educational and portfolio purposes. While it mimics real-world productivity apps, it’s a self-contained client-side app and not intended for production use.

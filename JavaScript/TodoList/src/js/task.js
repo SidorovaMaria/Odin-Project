@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { createEl, createIconBtn, getPrioritySymbol } from "./helper.js";
+import { createEl, createIconBtn, getPrioritySymbol } from "./utils.js";
 import deleteIcon from "../assets/icons/delete.png";
 import EditIcon from "../assets/icons/edit-text.png";
 import addIcon from "../assets/icons/add.png";

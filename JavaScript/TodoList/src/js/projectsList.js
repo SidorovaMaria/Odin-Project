@@ -1,4 +1,4 @@
-import { createEl, createIconBtn } from "./helper";
+import { createEl, createIconBtn } from "./utils";
 import { Project, ProjectView } from "./project";
 import { Task } from "./task";
 import CloseIcon from "../assets/icons/close.png";

@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 import { Task, TaskView } from "./task";
-import { createEl, createIconBtn } from "./helper";
+import { createEl, createIconBtn } from "./utils";
 import DeleteIcon from "../assets/icons/delete.png";
 
 import AddIcon from "../assets/icons/add.png";
