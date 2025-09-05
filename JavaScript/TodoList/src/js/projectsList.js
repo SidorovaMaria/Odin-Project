@@ -6,7 +6,8 @@ import LogoIcon from "../assets/icons/logo.png";
 import DeleteIcon from "../assets/icons/delete.png";
 import AddIcon from "../assets/icons/add.png";
 import EditIcon from "../assets/icons/edit-text.png";
-import { add } from "date-fns";
+import { persist } from "..";
+
 export class ProjectsList {
   constructor(projects = []) {
     this._projects = projects;
@@ -44,6 +45,23 @@ export class ProjectsList {
   set currentProject(project) {
     if (project !== null && !(project instanceof Project)) throw new Error("Invalid project");
     this._currentProject = project;
+  }
+  toJSON() {
+    return {
+      version: 1,
+      currentProjectId: this._currentProject ? this._currentProject.getId() : null,
+      projects: this._projects.map((p) => p.toJSON()),
+    };
+  }
+  static fromJSON(data) {
+    const list = new ProjectsList();
+    if (!data || !Array.isArray(data.projects)) return list;
+    list._projects = data.projects.map((p) => Project.fromJSON(p));
+    list._currentProject =
+      (data.currentProjectId && list._projects.find((p) => p.getId() === data.currentProjectId)) ||
+      list._projects[0] ||
+      null;
+    return list;
   }
 }
 export class ProjectListView {
@@ -291,6 +309,7 @@ export class ProjectListView {
           this.updateActiveProjectListItem(projectId);
           this.renderProjectView(this.projectsList.currentProject, this.projectShowEl);
           this.onSelect(this.projectsList.currentProject);
+          persist();
           break;
         }
         case "add": {
@@ -325,6 +344,7 @@ export class ProjectListView {
             this.projectShowEl.innerHTML = "";
           }
           this.onDelete(removed);
+          persist();
           break;
         }
         case "close-add-project-form": {
@@ -361,6 +381,7 @@ export class ProjectListView {
           this.root.querySelector(".overlay").remove();
           this.renderEmptyList(this.root.querySelector(".projects-list"));
           this.renderProjectListItems(project, this.root.querySelector(".projects-list"));
+          persist();
         }
       }
       if (form.id === "edit-project-form") {
@@ -387,6 +408,7 @@ export class ProjectListView {
         this.root.querySelector("#edit-project-form").remove();
         this.root.querySelector(".overlay").remove();
         this.renderProjectView(project, this.root.querySelector(".project-show"));
+        persist();
       }
     });
   }

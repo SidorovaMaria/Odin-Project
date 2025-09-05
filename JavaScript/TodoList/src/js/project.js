@@ -6,6 +6,7 @@ import DeleteIcon from "../assets/icons/delete.png";
 import AddIcon from "../assets/icons/add.png";
 import CloseIcon from "../assets/icons/close.png";
 import { format } from "date-fns";
+import { persist } from "..";
 export class Project {
   constructor(name, tasks = []) {
     this._id = uuid();
@@ -73,11 +74,7 @@ export class Project {
   static fromJSON(obj) {
     const proj = new Project(obj.name);
     proj._id = obj.id;
-    proj._tasks = obj.tasks.map((taskObj) => {
-      const task = new Task();
-      task.fromJSON(taskObj);
-      return task;
-    });
+    proj._tasks = (obj.tasks || []).map((t) => Task.fromJSON(t));
     return proj;
   }
 }
@@ -364,6 +361,7 @@ export class ProjectView {
           this.renderTask(task, tasksContainer);
           this.container.querySelector("#add-task-overlay")?.remove();
           this.container.querySelector("#add-task-form-container")?.remove();
+          persist();
         }
       }
     });

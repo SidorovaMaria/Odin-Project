@@ -31,3 +31,11 @@ export const getPrioritySymbol = (priority) => {
       return "";
   }
 };
+//Not Used currently, but might be useful in the future
+export const debounce = (fn, ms = 200) => {
+  let t;
+  return (...args) => {
+    clearTimeout(t);
+    t = setTimeout(() => fn(...args), ms);
+  };
+};

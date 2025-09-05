@@ -6,39 +6,29 @@ import "./js/projectsList";
 import { ProjectListView, ProjectsList } from "./js/projectsList";
 import { Project } from "./js/project";
 import { Task } from "./js/task";
+import { loadState, saveState } from "./js/storage";
+import { debounce } from "./js/helper";
 
-const projectsList = new ProjectsList();
-
-//SAMPLE DATA FOR VISUALIZATION PURPOSES
-const exampleProject1 = new Project("Procrastination Station");
-const exampleTask1 = new Task(
-  "Triage the Todo Tsunami",
-  "Sort the chaotic backlog into bite-sized, scheduled chunks.",
-  new Date("2025-12-01"),
-  "High"
-);
-exampleTask1.addChecklistItem("List all pending tasks");
-const exampleTask2 = new Task(
-  "Make the Plan Plan",
-  "Create a weekly planning ritual and write it down.",
-  new Date("2025-12-05"),
-  "Medium"
-);
-exampleTask2.addChecklistItem("Choose a planning day");
-exampleTask2.addChecklistItem("Set reminders");
-exampleTask2.addChecklistItem("Review and adjust weekly");
-
-const exampleTask3 = new Task(
-  "Set Realistic Deadlines",
-  "Establish achievable timelines to avoid burnout and ensure steady progress.",
-  new Date("2025-12-10"),
-  "Low"
-);
-
-exampleProject1.addTask(exampleTask1);
-exampleProject1.addTask(exampleTask2);
-exampleProject1.addTask(exampleTask3);
-projectsList.addProject(exampleProject1);
-
+let projectsList;
+const saved = loadState();
+if (saved) {
+  projectsList = ProjectsList.fromJSON(saved);
+} else {
+  projectsList = new ProjectsList();
+  const exampleProject = new Project("Welcome to Planerly!");
+  const exampleTask = new Task(
+    "This is an example task",
+    "You can edit or delete it, and add new tasks using the + button. Or complete it by checking the circle box at the bottom!",
+    new Date(),
+    "Medium"
+  );
+  exampleTask.addChecklistItem("Check off items as you complete them");
+  exampleTask.addChecklistItem("Edit tasks by clicking the edit icon");
+  exampleTask.addChecklistItem("Delete tasks with the trash icon");
+  exampleProject.addTask(exampleTask);
+  projectsList.addProject(exampleProject);
+  saveState(projectsList);
+}
+export const persist = () => saveState(projectsList);
 const app = new ProjectListView(projectsList);
 app.render();

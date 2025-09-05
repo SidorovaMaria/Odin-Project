@@ -6,6 +6,7 @@ import addIcon from "../assets/icons/add.png";
 import UndoIcon from "../assets/icons/undo.png";
 import closeIcon from "../assets/icons/close.png";
 import { format } from "date-fns";
+import { persist } from "../index.js";
 
 const PRIORITIES = ["Low", "Medium", "High"];
 const toYMD = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
@@ -145,15 +146,18 @@ export class Task {
     };
   }
   // Hydrate task instance from JSON
-  fromJSON(json) {
-    this.id = json.id;
-    this._title = json.title;
-    this._description = json.description;
-    this._dueDate = new Date(json.dueDate);
-    this._priority = json.priority;
-    this._completed = json.completed;
-    this._checklist = json.checklist;
-    this._createdAt = new Date(json.createdAt);
+  static fromJSON(json) {
+    const task = new Task(
+      json.title,
+      json.description,
+      new Date(json.dueDate),
+      json.priority,
+      Boolean(json.completed),
+      Array.isArray(json.checklist) ? json.checklist : []
+    );
+    task.id = json.id; // Preserve original ID
+    task._createdAt = json.createdAt ? new Date(json.createdAt) : new Date();
+    return task;
   }
 }
 
@@ -170,7 +174,11 @@ export class TaskView {
 
     //Main container for the task's DOM elements
     this.container = createEl("article", {
-      classes: ["task", `${this.task.getPriority().toLowerCase()}-priority`],
+      classes: [
+        "task",
+        `${this.task.getPriority().toLowerCase()}-priority`,
+        `${this.task.isCompleted() && "completed"}`,
+      ],
       attrs: {
         "data-task-id": this.task.getId(),
       },
@@ -529,6 +537,7 @@ export class TaskView {
         case "delete-task":
           this.onDelete(this.task.getId());
           this.destroy();
+          persist();
           break;
         // Edit task
         case "edit-task":
@@ -545,6 +554,7 @@ export class TaskView {
           const id = btn.getAttribute("data-check-id");
           this.task.removeChecklistItem(id);
           this.renderChecklist();
+          persist();
           break;
         // Undo add checklist item form
         case "undo-add-checklist-item":
@@ -563,6 +573,7 @@ export class TaskView {
           } else {
             form.classList.add("error");
           }
+          persist();
           break;
         // Close edit task form
         case "close-edit-form":
@@ -588,6 +599,7 @@ export class TaskView {
         }
         this.renderChecklist();
         this.container.classList.toggle("completed", this.task.isCompleted());
+        persist();
       }
     });
     // Form submission for editing task
@@ -643,6 +655,7 @@ export class TaskView {
           this.render();
           document.querySelector("#edit-task-overlay")?.remove();
           document.querySelector("#edit-task-form")?.remove();
+          persist();
         }
       }
     });
