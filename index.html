@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Weather App</title>
+  <script defer src="main.js"></script></head>
+  <body>
+    <main id="app">
+      <header>
+        <h1>Nimbus - Weather Dashboard</h1>
+        <p>Get detailed weather information for your location.</p>
+      </header>
+      <section id="search-bar">
+        <form id="location-form">
+          <input type="text" id="location-input" placeholder="Enter location" />
+          <button id="search-button">
+            <i class="fas fa-search"></i>
+          </button>
+        </form>
+      </section>
+      <div id="loading" class="hidden">
+        <div data-loading class="hidden">
+          Loading...
+          <i class="fas fa-spinner fa-spin"></i>
+        </div>
+        <div data-error class="hidden" role="alert">
+          <i class="fas fa-exclamation-triangle"></i>
+          Error fetching weather data. Please try again later.
+        </div>
+      </div>
+      <!-- <section id="current-weather">
+        <div class="weather-now-container">
+          <h2 id="weather-location">New York, NY, USA</h2>
+          <p id="dateTime-now">Thursday, December 19, 2024 at 2:30 PM</p>
+          <div id="current-weather-data">
+            <h3 id="current-temp">22°C</h3>
+            <div id="current-condition">
+              <p id="current-condition-text">Partly Cloudy</p>
+              <p>
+                Feels Like
+                <span id="feels-like-temp">25°C</span>
+              </p>
+            </div>
+          </div>
+          <p id="current-description">
+            Partly cloudy with scattered clouds throughout the day
+          </p>
+        </div>
+        <div id="current-icon-container">
+          <i class="fa-solid fa-cloud-sun" id="current-icon"></i>
+        </div>
+      </section> -->
+      <!-- <section id="additional-info">
+        <h3>Todays Weather Details</h3>
+        <div id="details-container">
+          <div class="detail-card" id="sunrise">
+            <i class="fa-solid fa-sun" style="color: #ffd700"></i>
+            <p>Sunrise</p>
+            <span id="sunrise-time">7:15 AM</span>
+          </div>
+          <div class="detail-card" id="sunset">
+            <i class="fa-solid fa-moon" style="color: #fb923c"></i>
+            <p>Sunset</p>
+            <span id="sunset-time">5:45 PM</span>
+          </div>
+          <div class="detail-card" id="visibility">
+            <i class="fa-solid fa-eye" style="color: #65baff"></i>
+            <p>Visibility</p>
+            <span id="visibility-distance">10 km</span>
+          </div>
+          <div class="detail-card" id="humidity">
+            <i class="fa-solid fa-droplet" style="color: #3b82f6"></i>
+            <p>Humidity</p>
+            <span id="humidity-level">60%</span>
+          </div>
+          <div class="detail-card" id="wind-speed">
+            <i class="fa-solid fa-wind" style="color: #66fdd0"></i>
+            <p>Wind Speed</p>
+            <span id="wind-speed-value">15 km/h</span>
+          </div>
+          <div class="detail-card" id="wind-direction">
+            <i class="fa-solid fa-location-arrow" style="color: #fb6124"></i>
+            <p>Wind Direction</p>
+            <span id="wind-direction-value">180°</span>
+          </div>
+        </div>
+      </section> -->
+      <!-- <section id="forecast">
+        <h4>7-Day Forecast</h4>
+        <div idforecast-container="">
+          <div class="forecast-card">
+            <div class="forecast-day">
+              <h4>Tomorrow</h4>
+              <i class="fa-solid fa-cloud-sun" style="color: #facc15"></i>
+              <p>Partly Cloudy</p>
+            </div>
+            <div class="forecast-temps">
+              <span>25°C</span>
+              <div class="temp-slider-container">
+                <span class="temp-slider"></span>
+              </div>
+              <span>18°C</span>
+            </div>
+          </div>
+          <div class="forecast-card">
+            <div class="forecast-day">
+              <h4>Fri, Dec 20</h4>
+              <i class="fa-solid fa-cloud-sun" style="color: #facc15"></i>
+              <p>Partly Cloudy</p>
+            </div>
+            <div class="forecast-temps">
+              <span id="day-min">18°C</span>
+              <div class="temp-slider-container">
+                <span class="temp-slider"></span>
+              </div>
+              <span id="day-max">25°C</span>
+            </div>
+          </div>
+        </div>
+      </section> -->
+    </main>
+  </body>
+</html>
