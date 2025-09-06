@@ -41,7 +41,7 @@ export function createWeatherUI(root) {
     if (currentWeatherSection) {
       currentWeatherSection.remove();
     }
-    currentWeatherSection = createEl("section", { attrs: { id: "current-weather" } });
+    currentWeatherSection = createEl("section", { attrs: { id: "current-weather", tabindex: 0 } });
     //Weather Now Container
     const weatherContainer = createEl("div", { classes: ["weather-now-container"] });
 
@@ -103,7 +103,7 @@ export function createWeatherUI(root) {
     if (section) {
       section.remove();
     }
-    section = createEl("section", { attrs: { id: "additional-info" } });
+    section = createEl("section", { attrs: { id: "additional-info", tabindex: 0 } });
     const sectionTitle = createEl("h3", { text: "Todays Weather Details" });
     const detailsContainer = createEl("div", {
       attrs: {
@@ -166,7 +166,7 @@ export function createWeatherUI(root) {
   const makeCard = ({ id, icon, label, unitId, unit }) => {
     const card = createEl("div", {
       classes: ["detail-card"],
-      attrs: { id: id },
+      attrs: { id: id, tabindex: 0 },
     });
     const i = document.createElement("i");
     i.className = `fa-solid ${icon}`;
@@ -200,7 +200,7 @@ export function createWeatherUI(root) {
     if (section) {
       section.remove();
     }
-    section = createEl("section", { attrs: { id: "forecast" } });
+    section = createEl("section", { attrs: { id: "forecast" }, tabindex: 0 });
     const title = createEl("h3", { text: "7-Day Forecast" });
     const cardsContainer = createEl("div", { attrs: { id: "forecast-container" } });
     forecasts.forEach((day) => {
@@ -211,7 +211,7 @@ export function createWeatherUI(root) {
     return section;
   }
   function createForecastCard(day) {
-    const card = createEl("div", { classes: ["forecast-card"] });
+    const card = createEl("div", { classes: ["forecast-card"], attrs: { tabindex: 0 } });
     const forecastDay = createEl("div", { classes: ["forecast-day"] });
     const Day = createEl("h4", { text: toRelativeDay(day.dateEpoch) || "—" });
     const icon = document.createElement("i");

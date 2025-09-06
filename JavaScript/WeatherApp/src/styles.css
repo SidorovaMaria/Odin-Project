@@ -21,6 +21,14 @@ body {
 
   color: var(--text);
 }
+
+section:focus,
+.detail-card:focus,
+.forecast-card:focus {
+  outline: none;
+  border: 2px solid var(--accent);
+  filter: contrast(1.2);
+}
 #loading {
   margin: 2rem auto;
   display: flex;
@@ -117,7 +125,7 @@ form {
 section:not(#search-bar) {
   width: 70%;
   margin: 1rem auto;
-  padding: 2rem;
+  padding: 2.5rem;
   backdrop-filter: blur(4px);
   border: 1px solid #374151;
   border-radius: 0.75rem;
