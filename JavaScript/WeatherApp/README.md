@@ -1,6 +1,6 @@
 # Nimbus – Weather & Forecast Web App
 
-**[Nimbus - Weather App](...) – A lightweight, modular project and task management web app built with ES6 modules, localStorage persistence, and clean component-based architecture.**
+**[Nimbus - Weather App](https://htmlpreview.github.io/?https://github.com/SidorovaMaria/Odin-Project/blob/nimbus/index.html) – A lightweight, modular project and task management web app built with ES6 modules, localStorage persistence, and clean component-based architecture.**
 
 ![MainPagePreview](./src/assets/example-newYork.png)
 
