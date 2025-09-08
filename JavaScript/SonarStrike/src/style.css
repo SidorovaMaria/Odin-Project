@@ -35,7 +35,7 @@ body {
     object-fit: cover;
 }
 header {
-    height: 90px;
+    height: 80px;
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -65,7 +65,7 @@ header {
         gap: 0.25rem;
 
         h1 {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             line-height: 1.2;
             font-family: "Carter One", cursive;
             background: linear-gradient(to right, #e14343, #f97316);
@@ -73,7 +73,7 @@ header {
             -webkit-text-fill-color: transparent;
         }
         p {
-            font-size: 0.775rem;
+            font-size: 0.675rem;
             letter-spacing: -0.3px;
             text-transform: uppercase;
             color: var(--color-text-muted);
@@ -87,7 +87,7 @@ header {
         color: #13ac92;
         font-weight: bold;
         p {
-            font-size: 0.875rem;
+            font-size: 0.775rem;
             line-height: 0.875rem;
         }
         .status {
@@ -104,7 +104,8 @@ main {
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    margin: 5rem 2rem;
+    /* justify-content: center; */
     align-items: center;
-    min-height: calc(100vh - 90px);
+    min-height: calc(100vh - 80px);
 }

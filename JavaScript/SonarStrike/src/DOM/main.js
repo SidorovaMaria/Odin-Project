@@ -1,4 +1,4 @@
-import { StartScreen } from "./screens/startScreen";
+import { StartScreen } from "./styles/startScreen";
 
 // c app() {
 //     const appElement = document.getElementById("app");

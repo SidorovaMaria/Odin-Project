@@ -1,6 +1,6 @@
 #start-screen {
     background-color: rgba(17, 24, 39, 0.8);
-    baclkdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     border: 1px solid rgba(220, 38, 38, 0.3);
     border-radius: 1rem;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
@@ -106,7 +106,7 @@
         transform: scale(1);
         cursor: not-allowed;
     }
-    &:hover {
+    &:not(:disabled):hover {
         background: linear-gradient(
             to right,
             #b91c1c,

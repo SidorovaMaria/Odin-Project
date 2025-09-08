@@ -1,15 +1,20 @@
 import "./Screenstyle.css";
+import "./animation.css";
 import { create } from "../../utils/utils";
+
 export class StartScreen {
     constructor(root) {
         this.root = root;
         this.conatiner = create("section", {
-            classes: ["start-screen"],
+            classes: ["start-screen", "fade-in"],
             attrs: {
                 id: "start-screen",
             },
         });
         this._bound = false;
+
+        this._fadeTimeout = null;
+        this._removeTimeout = null;
     }
     createStartCard() {
         this.createHeader();
@@ -87,8 +92,16 @@ export class StartScreen {
         aboutMe.append(github, portfolio);
         this.conatiner.appendChild(aboutMe);
     }
-    remove() {
-        this.conatiner.remove();
+    removeScreen() {
+        if (this._fadeTimeout) clearTimeout(this._fadeTimeout);
+        if (this._removeTimeout) clearTimeout(this._removeTimeout);
+
+        this._fadeTimeout = setTimeout(() => {
+            this.conatiner.classList.add("fade-out");
+        }, 1000);
+        this._removeTimeout = setTimeout(() => {
+            this.conatiner.remove();
+        }, 1500);
     }
     bindEvents() {
         if (this._bound) return;
