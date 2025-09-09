@@ -1,13 +1,16 @@
 class Ship {
-    constructor(length, orientation = "horizontal") {
+    constructor(name, length, orientation = "horizontal") {
+        this.name = name;
         this.id = crypto.randomUUID();
         this.length = length;
         this.orientation = orientation; //'vertical';
         this.hitCount = 0;
     }
+
     hit(coords) {
         this.hitCount++;
     }
+
     isSunk() {
         return this.hitCount >= this.length;
     }
@@ -28,6 +31,6 @@ class Ship {
     }
 }
 
-export function createShip(length, orientation) {
-    return new Ship(length, orientation);
+export function createShip(name, length, orientation) {
+    return new Ship(name, length, orientation);
 }

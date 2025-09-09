@@ -1,11 +1,10 @@
 const { createGameBoard } = require("./gameBoard");
 
-class Player {
-    constructor(name = "Player 1", mode = "player") {
+export class Player {
+    constructor(name = "Player 1", startsGame = false) {
         this.name = name;
-        this.mode = mode; //player or cpu
         this.board = createGameBoard();
-        this.turn = true;
+        this.turn = startsGame;
     }
     checkTurn() {
         return this.turn;
@@ -13,13 +12,17 @@ class Player {
     switchTurn() {
         this.turn = !this.turn;
     }
-    endTurn() {
-        this.turn = false;
+    endTurn(opponent) {
+        if (!(opponent instanceof Player)) {
+            throw new Error("Please provide Opposite Player's Class");
+        }
+        opponent.switchTurn();
+        this.switchTurn();
     }
     hasLost() {
         return this.board.allShipsSunk();
     }
 }
-export function creaatePlayer(name, mode) {
-    return new Player(name, mode);
+export function createPlayer(name) {
+    return new Player(name);
 }

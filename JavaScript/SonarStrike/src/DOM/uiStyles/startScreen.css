@@ -11,6 +11,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-top: 4rem;
 }
 .header-container {
     text-align: center;
@@ -207,4 +208,3 @@
         }
     }
 }
-/* w-full py-4 bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-700 hover:to-orange-600 disabled:from-gray-700 disabled:to-gray-800 text-white font-bold font-mono rounded-lg transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed shadow-lg border border-red-500/50 */

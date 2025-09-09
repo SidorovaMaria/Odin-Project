@@ -2,7 +2,7 @@ import { createShip } from "../src/modules/ship";
 
 describe("Ship creation methods test", () => {
     beforeEach(() => {
-        ship = createShip(3);
+        ship = createShip("Destroyer", 3);
     });
 
     test("Increment hit Count", () => {

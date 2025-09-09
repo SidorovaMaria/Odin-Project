@@ -17,7 +17,7 @@ describe("Funcionaility of the Board Class", () => {
     };
     beforeEach(() => {
         board = createGameBoard();
-        ship = createShip(3);
+        ship = createShip("Destroyer", 3);
     });
     test("Board initializes correctly", () => {
         expect(board.getBoard()).toEqual(expectedBoard);
@@ -56,8 +56,8 @@ describe("Funcionaility of the Board Class", () => {
         expect(board.getCell("C9")).toBe(ship);
     });
     test("Can place ships randomly without overlap", () => {
-        const ship1 = createShip(4);
-        const ship2 = createShip(3);
+        const ship1 = createShip("Destroyer", 4);
+        const ship2 = createShip("Submarine", 3);
         const pos1 = board.placeShipRandomly(ship1);
         const pos2 = board.placeShipRandomly(ship2);
         const allPositions = [...pos1, ...pos2];
@@ -101,8 +101,8 @@ describe("Funcionaility of the Board Class", () => {
         ]);
     });
     test("All ships sunk detection works", () => {
-        const ship1 = createShip(2);
-        const ship2 = createShip(3);
+        const ship1 = createShip("Destroyer", 2);
+        const ship2 = createShip("Submarine", 3);
         board.placeShip("A1", ship1);
         board.placeShip("C1", ship2);
         expect(board.allShipsSunk()).toBe(false);
@@ -124,8 +124,8 @@ describe("Funcionaility of the Board Class", () => {
         expect(board.missedShots).toEqual([]);
         expect(board.ships).toEqual([]);
     });
-    test.only('Attack result returns "hit", "miss" or "sunk" appropriately', () => {
-        const testShip = createShip(2);
+    test('Attack result returns "hit", "miss" or "sunk" appropriately', () => {
+        const testShip = createShip("Destroyer", 2);
         board.placeShip("E5", testShip);
         expect(board.attckResult("A1")).toBe("miss");
         expect(board.attckResult("E5")).toBe("hit");
