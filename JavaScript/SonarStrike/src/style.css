@@ -7,7 +7,8 @@
     --color-text-muted: #d1d5db;
     --color-grid: #415a77;
     --color-marker-hit: #e63946;
-    --color-marker-miss: #a8dadc;
+    --color-marker-miss: #60a5fa;
+    --color-marker-not-possible: #60a5fa80;
     --color-highlight: #13ac92;
     --color-accent-dark: #ffd166;
     --font-accent: "Carter One", cursive;
@@ -194,6 +195,9 @@ main {
     border: 1px solid #5e6b7c;
     border-radius: 0.25rem;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     transition: background-color 0.3s;
 }
 .data-cell.preview-valid {
@@ -211,6 +215,45 @@ main {
         color: white;
     }
 }
+.data-cell.attacking {
+    border: 2px dashed #f87171;
+    background-color: #f8717130;
+
+    transition: background-color 0.3s;
+    i {
+        color: #f87171;
+        font-size: 0.85rem;
+    }
+}
+.data-cell[data-status="miss"] {
+    background-color: var(--color-marker-miss);
+    i {
+        color: #1e293b;
+        font-size: 0.85rem;
+    }
+}
+.data-cell[data-status="hit"] {
+    background-color: var(--color-marker-hit);
+    i {
+        color: white;
+        font-size: 0.85rem;
+    }
+}
+.data-cell[data-status="cpu-thinking"] {
+    background-color: #fbbf24a1;
+    i {
+        color: #1e293b;
+        font-size: 0.85rem;
+    }
+}
+.data-cell[data-status="not-possible"] {
+    background-color: var(--color-marker-not-possible);
+    i {
+        color: #1e293b;
+        font-size: 0.85rem;
+    }
+}
+
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -230,11 +273,16 @@ main {
     border-radius: 1rem;
     padding: 1.5rem;
     width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     max-width: 500px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     animation: fadeInScale 0.3s ease forwards;
 }
 .modal-header {
+    width: 100%;
     font-size: 1.25rem;
     display: flex;
     align-items: center;
@@ -264,4 +312,21 @@ main {
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
+}
+.winner-message {
+    font-size: 2em;
+    text-align: center;
+    background: linear-gradient(to right, #e14343, #f97316);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 1rem 0;
+    text-transform: uppercase;
+    font-family: "Carter One", cursive;
+}
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 100%;
 }

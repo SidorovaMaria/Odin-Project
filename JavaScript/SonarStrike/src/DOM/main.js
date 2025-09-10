@@ -1,4 +1,5 @@
 import { Game } from "../modules/game";
+import { BattleScreen } from "./ui/BattleScreen";
 import { FleetSetUp } from "./ui/FleetSetUpScreen";
 import { StartScreen } from "./UI/startScreen";
 import uiUtils from "./uiUtils";
@@ -9,6 +10,7 @@ export class App {
         this.game = new Game();
         this.startScreen = new StartScreen(this.root);
         this.fleetSetUpScreen = null;
+        this.battleScreen = new BattleScreen(this.root, this.game, this.restartGame.bind(this));
     }
     loadGame() {
         //Reset all app content
@@ -37,6 +39,25 @@ export class App {
         const startBattleButton = document.getElementById("start-game-button");
         startBattleButton.addEventListener("click", async () => {
             await this.fleetSetUpScreen.removeScreen();
+            this.battleScreen.render();
+        });
+    }
+    restartGame() {
+        const playAgainBtns = document.querySelectorAll(".play-again-button");
+        if (!playAgainBtns) return;
+        playAgainBtns.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                this.game = new Game();
+                this.battleScreen = new BattleScreen(
+                    this.root,
+                    this.game,
+                    this.restartGame.bind(this),
+                );
+                this.startScreen = new StartScreen(this.root);
+                this.fleetSetUpScreen = null;
+                uiUtils.closeModal();
+                this.loadGame();
+            });
         });
     }
 }

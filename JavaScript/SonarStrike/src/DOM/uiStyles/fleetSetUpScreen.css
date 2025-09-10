@@ -37,7 +37,6 @@
     margin: 0.5rem 0;
     display: grid;
     gap: 2rem;
-
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 .fleet-panel {
@@ -170,7 +169,8 @@
     }
 }
 
-.rules-button {
+.rules-button,
+.play-again-button {
     margin-top: 1.5rem;
     position: relative;
     width: 100%;
@@ -197,7 +197,8 @@
         position: relative;
     }
 }
-.rules-button::after {
+.rules-button::after,
+.play-again-button::after {
     content: "";
     position: absolute;
     top: 0;
@@ -208,9 +209,14 @@
     transform: skewX(-45deg) scale(0, 1);
     background: linear-gradient(to bottom right, #dc2626, #f97316);
 }
-.rules-button:hover::after {
+.rules-button:hover::after,
+.play-again-button:hover::after {
     transform: skewX(-45deg) scale(2, 1);
     transition: transform 1s ease;
+}
+.play-again-button {
+    width: 50%;
+    margin: 0 auto;
 }
 .rules-modal-content {
     ul {

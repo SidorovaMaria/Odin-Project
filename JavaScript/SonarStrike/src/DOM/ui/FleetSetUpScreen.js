@@ -45,12 +45,6 @@ export class FleetSetUp {
         });
         subtitle.appendChild(subtitleSpan);
         header.append(title, subtitle);
-
-        // CHECK THIS
-        header.addEventListener("click", () => {
-            console.log(this);
-        });
-
         root.appendChild(header);
     }
     createFleets() {
@@ -193,7 +187,7 @@ export class FleetSetUp {
         if (buttonInteraction && ship === this.chosenShip) return;
         //update new active card
         const nextBtn = panel?.querySelector(`[data-ship-id='${ship.id}']`);
-        console.log({ nextBtn });
+
         if (nextBtn) {
             nextBtn.classList.add("active");
             nextBtn.setAttribute("aria-selected", "true");

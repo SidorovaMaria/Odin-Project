@@ -1,0 +1,50 @@
+#battle-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* backdrop-filter: blur(5px); */
+    /* border: 1px solid rgba(220, 38, 38, 0.3); */
+    border-radius: 1rem;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    margin-top: 1rem;
+    width: 100%;
+}
+.header-container.battle {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+.battle-title {
+    font-size: 2em;
+    line-height: 2.25rem;
+    color: #d1d5db;
+
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    font-family: "Carter One", cursive;
+}
+.combat-player {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-family: "Carter One", cursive;
+    gap: 1rem;
+}
+#combat-player-name {
+    color: #f87171;
+}
+#combat-cpu-name {
+    color: #60a5fa;
+}
+#combat-vs {
+    width: 3rem;
+    height: 0.5rem;
+    border-radius: 0.5rem;
+    background-image: linear-gradient(to left, #60a5fa, #f87171);
+}
+.battle-boards {
+    display: flex;
+    gap: 2rem;
+}

@@ -34,7 +34,7 @@ const uiUtils = (() => {
             root.appendChild(numberCell);
         }
     }
-    function createCellRows(root) {
+    function createCellRows(root, player) {
         for (let row = 1; row <= BOARD_SIZE; row++) {
             for (let cell = 0; cell <= BOARD_SIZE; cell++) {
                 const letterDiv = create("div", { classes: ["cell", "letter-cell"] });
@@ -45,6 +45,7 @@ const uiUtils = (() => {
                         "aria-label": `Row ${LETTERS[row - 1]} Cell ${cell}`,
                         "data-status": "water",
                         tabindex: "0",
+                        "data-player": player ? player.name : "",
                         "data-row": row - 1,
                         "data-cell": cell - 1,
                         "data-ship-id": "",
@@ -101,6 +102,13 @@ const uiUtils = (() => {
         }
     }
 
-    return { updateAvatarName, createMap, createModal };
+    return {
+        updateAvatarName,
+        createMap,
+        createModal,
+        createNumbersRow,
+        createCellRows,
+        closeModal,
+    };
 })();
 export default uiUtils;

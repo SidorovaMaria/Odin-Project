@@ -24,7 +24,7 @@ export class StartScreen {
         this.root.appendChild(this.container);
     }
     createHeader() {
-        const header = create("div", { classes: ["header-container"] });
+        const header = create("div", { classes: ["header-container", "start"] });
         const IconContainer = create("div", { classes: ["icon-container"] });
         const icon = create("i", { classes: ["fa-solid", "fa-ship"] });
         IconContainer.appendChild(icon);

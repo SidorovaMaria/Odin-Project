@@ -4,6 +4,7 @@ import "./style.css";
 import "./modules/gameBoard";
 import { App } from "./DOM/main";
 import { create } from "./utils/utils";
+import { GameBoard } from "./modules/gameBoard";
 
 const application = new App();
 application.loadGame();
