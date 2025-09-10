@@ -14,6 +14,10 @@ export class Game {
     setPlayer(name) {
         this.player = new Player(name, true);
     }
+    /**
+     * Initializes the game by resetting the CPU's board and placing all ships randomly.
+     * Call this method at the start of a new game to prepare the CPU's board.
+     */
     initializeGame() {
         this.cpu.board.resetBoard();
         this.cpu.board.placeAllShipsRandom();
@@ -22,11 +26,10 @@ export class Game {
     getActivePlayer() {
         if (this.player.checkTurn()) {
             return this.player;
-        } else {
-            return this.cpu;
         }
+        return this.cpu;
     }
-    CPUAttack() {
+    cpuAttack() {
         if (!this.cpu.checkTurn()) throw new Error("It's not CPU's turn!");
 
         const attacks = [];
@@ -45,12 +48,12 @@ export class Game {
         }
         return attacks;
     }
+
     pickRandomAvailable(board) {
         const available = board.getAvailableShots();
         if (!available.length) return null;
         return available[Math.floor(Math.random() * available.length)];
     }
-    // Drop-in replacement
     // Drop-in replacement
     pickBestAvailable(board) {
         const available = board.getAvailableShots();
@@ -58,9 +61,8 @@ export class Game {
 
         const availSet = new Set(available);
         const hits = board.getHitShots(); // assumed latest at the end
+        // If there are no previous hits, fallback to random available shot (hunt mode)
         if (!hits.length) return this.pickRandomAvailable(board);
-
-        const LETTERS = "ABCDEFGHIJ";
         const toIndex = (L) => LETTERS.indexOf(L);
         const inBounds = (r, c) => r >= 0 && r < 10 && c >= 0 && c < 10;
         const toCoord = (r, c) => board.stringifyCoord({ row: LETTERS[r], col: c });

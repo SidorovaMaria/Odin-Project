@@ -11,10 +11,11 @@
     width: 100%;
 }
 /* bg-gray-900/95 backdrop-blur-xl border border-red-500/30 rounded-2xl shadow-2xl p-8 */
-.set-up.header-container {
+.header-container.set-up {
     text-align: center;
     letter-spacing: auto;
     h2 {
+        font-family: "Carter One", cursive;
         font-size: 1.5rem;
         font-weight: 800;
         background: linear-gradient(to right, #e14343, #f97316);

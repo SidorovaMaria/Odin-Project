@@ -126,9 +126,11 @@ describe("Funcionaility of the Board Class", () => {
     });
     test('Attack result returns "hit", "miss" or "sunk" appropriately', () => {
         const testShip = createShip("Destroyer", 2);
+        const testShip2 = createShip("Submarine", 3);
+        board.placeShip("B1", testShip2);
         board.placeShip("E5", testShip);
-        expect(board.attckResult("A1")).toBe("miss");
-        expect(board.attckResult("E5")).toBe("hit");
-        expect(board.attckResult("E6")).toBe("sunk");
+        expect(board.attackResult("A1")).toBe("miss");
+        expect(board.attackResult("E5")).toBe("hit");
+        expect(board.attackResult("E6")).toBe("sunk");
     });
 });

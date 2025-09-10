@@ -51,16 +51,20 @@ export class BattleGrid {
             const boardData = this.board.getShipsCoordsonBoard();
             boardData.forEach((coord) => {
                 const cell = parent.querySelector(`#${coord}`);
-                cell.dataset.shipId = this.board.getCell(coord).id;
+                if (cell) {
+                    cell.dataset.shipId = this.board.getCell(coord).id;
+                }
             });
         } else {
             const boardData = this.board.getShipsCoordsonBoard();
             boardData.forEach((coord) => {
                 const cell = parent.querySelector(`#${coord}`);
-                cell.dataset.status = "ship";
-                cell.dataset.shipId = this.board.getCell(coord).id;
-                const shipIcon = create("i", { classes: ["fa-solid", "fa-ship", "ship-icon"] });
-                cell.appendChild(shipIcon);
+                if (cell) {
+                    cell.dataset.status = "ship";
+                    cell.dataset.shipId = this.board.getCell(coord).id;
+                    const shipIcon = create("i", { classes: ["fa-solid", "fa-ship", "ship-icon"] });
+                    cell.appendChild(shipIcon);
+                }
             });
         }
     };

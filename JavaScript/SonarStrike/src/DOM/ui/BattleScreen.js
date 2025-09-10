@@ -21,6 +21,7 @@ export class BattleScreen {
         this.createBattleBoard();
 
         this.root.appendChild(this.container);
+        this.highlightGridToAttack(true); // Player starts first
         this.bindEvents();
     }
     createHeader() {
@@ -64,7 +65,6 @@ export class BattleScreen {
                 this.clearAttackPreview(cpuGrid);
                 return;
             }
-
             // reset previous highlights
             this.clearAttackPreview(cpuGrid);
 
@@ -123,7 +123,8 @@ export class BattleScreen {
         const result = this.game.player.attack(this.game.cpu, coord);
         if (result === "miss") {
             this.paintMissedShot(element);
-            const result = this.game.CPUAttack();
+            const result = this.game.cpuAttack();
+            this.highlightGridToAttack(false);
             if (result.winner) {
                 this.paintCpuShot(result.attacks);
                 this.setWinner(result.winner);
@@ -232,7 +233,7 @@ export class BattleScreen {
                         this.paintMissedShot(cellElement);
                     } else if (result === "hit") {
                         this.paintHitShot(cellElement);
-                    } else if (result === "sunk") {
+                    } else if (result === "sunk" || result === "all-sunk") {
                         this.paintHitShot(cellElement);
                         this.paintNotPossibleCells(cellElement);
                     }
@@ -244,7 +245,7 @@ export class BattleScreen {
 
         setTimeout(
             () => {
-                cpuGrid.style.pointerEvents = "auto";
+                this.highlightGridToAttack(true);
             },
             attackArray.length * 1000 + 1000,
         );
@@ -286,5 +287,19 @@ export class BattleScreen {
                 resolve();
             }, 500);
         });
+    }
+    highlightGridToAttack(playersTurn = true) {
+        const playerGrid = document.getElementById("Player-grid");
+        const cpuGrid = document.getElementById("CPU-grid");
+        if (!playerGrid || !cpuGrid) return;
+        if (playersTurn) {
+            cpuGrid.classList.add("active-grid");
+            playerGrid.classList.remove("active-grid");
+            cpuGrid.style.pointerEvents = "auto";
+        } else {
+            playerGrid.classList.add("active-grid");
+            cpuGrid.classList.remove("active-grid");
+            cpuGrid.style.pointerEvents = "none";
+        }
     }
 }
